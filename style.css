@@ -1,0 +1,28 @@
+:root {
+    --color-a: #ff0000;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+    align-items: center;
+    justify-content: center;
+}
+
+canvas {
+    flex: 1;
+    background-color: var(--color-a);
+    max-width: 540px;
+    max-height: 900px;
+    aspect-ratio: 3 / 5;
+    background: linear-gradient(#709cce, #ffffff);
+    touch-action: manipulation;
+}
