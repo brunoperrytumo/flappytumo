@@ -1,3 +1,9 @@
+@font-face {
+  font-family: gameFont;
+  src: url('assets/outside.ttf');
+}
+
+
 :root {
     --color-a: #ff0000;
 }
@@ -6,6 +12,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: gameFont;
 }
 
 html,
@@ -17,12 +24,44 @@ body {
     justify-content: center;
 }
 
+main {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    max-width: 540px;
+    max-height: 900px;
+    background: linear-gradient(#709cce, #ffffff);
+}
+
+#menu-container,
+#game-container {
+    position: absolute;
+    inset: 0;
+}
+
+#menu-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-container {
+    display: none;
+}
+
+h1 {
+    color: rgb(255, 255, 255);
+    font-size: 64px;
+    text-align: center;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    text-shadow: 3px 3px 1px rgb(0, 0, 0);
+}
+
 canvas {
     flex: 1;
     background-color: var(--color-a);
-    max-width: 540px;
-    max-height: 900px;
     aspect-ratio: 3 / 5;
-    background: linear-gradient(#709cce, #ffffff);
     touch-action: manipulation;
 }

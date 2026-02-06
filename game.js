@@ -15,7 +15,6 @@ window.onload = async function () {
     const w = document.body.clientWidth;
     const h = document.body.clientHeight;
 
-    console.log(w, h);
     canvas.width = w < 540 ? w : 540;
     canvas.height = h < 900 ? h : 900;
   };
