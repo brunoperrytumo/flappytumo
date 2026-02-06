@@ -64,4 +64,5 @@ canvas {
     background-color: var(--color-a);
     aspect-ratio: 3 / 5;
     touch-action: manipulation;
+    image-rendering: pixelated;
 }

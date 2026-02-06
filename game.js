@@ -6,8 +6,8 @@ window.onload = async function () {
   let bird = {
     x: 0,
     y: 0,
-    w: 0,
-    h: 0,
+    width: 0,
+    height: 0,
     bitmap: null,
   };
 
@@ -20,19 +20,19 @@ window.onload = async function () {
   };
 
   async function loadData() {
-    const req = await fetch("assets/flappy_bird.png");
+    const req = await fetch("assets/tumo_bird.png");
     const blob = await req.blob();
 
     bird.bitmap = await createImageBitmap(blob);
-    bird.w = bird.bitmap.width;
-    bird.h = bird.bitmap.height;
+    bird.width = 64;
+    bird.height = 64;
   }
   function update() {
     bird.y += 1;
   }
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(bird.bitmap, bird.x, bird.y, bird.w, bird.h);
+    ctx.drawImage(bird.bitmap, bird.x, bird.y, bird.width, bird.height);
   }
 
   function loop() {
@@ -41,8 +41,7 @@ window.onload = async function () {
     requestAnimationFrame(loop);
   }
 
-  window.onresize();
   await loadData();
-
+  window.onresize();
   loop();
 };
