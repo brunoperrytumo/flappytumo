@@ -6,6 +6,9 @@
 
 :root {
     --color-a: #ff0000;
+
+    --btn-width: 2px;
+    --btn-width-minus: -2px;
 }
 
 * {
@@ -44,6 +47,18 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1;
+}
+
+#buttons-container {
+    display: flex;
+    justify-content: stretch;
+    flex: 1;
+    max-width: 80%;
+    gap: 20px;
+}
+#buttons-container img {
+    flex: 1;
 }
 
 #game-container {
@@ -59,10 +74,28 @@ h1 {
     text-shadow: 3px 3px 1px rgb(0, 0, 0);
 }
 
-canvas {
+img {
+    image-rendering: pixelated;  
+}
+
+button {
+    display: flex;
     flex: 1;
-    background-color: var(--color-a);
-    aspect-ratio: 3 / 5;
-    touch-action: manipulation;
-    image-rendering: pixelated;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+
+
+#bird {
+    width: 64px;
+    height: auto;
+}
+
+#background {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    bottom: 0;
 }
