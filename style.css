@@ -107,4 +107,8 @@ button:active {
 canvas {
     position: absolute;
     inset: 0;
+    image-rendering: pixelated;              
+    image-rendering: -moz-crisp-edges;       
+    image-rendering: -webkit-optimize-contrast; 
+    -ms-interpolation-mode: nearest-neighbor;
 }

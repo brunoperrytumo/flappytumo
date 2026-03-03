@@ -21,12 +21,19 @@ window.onload = async function () {
     window.onresize();
   }
   function update() {
+    bird.update();
+
+    if (bird.y + bird.height > renderer.height) {
+      currentState = "GAME_OVER";
+      console.log("Game Over!");
+    }
+  }
+  function draw() {
     renderer.render(bird);
   }
-  function draw() {}
 
   function loop() {
-    if (currentState !== "MENU") {
+    if (currentState == "PLAYING") {
       update();
       draw();
     }
@@ -36,6 +43,12 @@ window.onload = async function () {
 
   setupLayout();
   loop();
+};
+
+window.onclick = function () {
+  if (currentState === "PLAYING") {
+    bird.jump();
+  }
 };
 
 window.onresize = function () {
