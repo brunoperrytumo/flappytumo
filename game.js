@@ -1,26 +1,36 @@
 import Bird from "./Bird.js";
+import Pipe from "./Pipe.js";
 import Renderer from "./Renderer.js";
 
 let currentState = "MENU";
 let renderer;
 let bird;
+let pipe;
 
 window.onload = async function () {
   async function setupLayout() {
     document.querySelector("#play-button").onclick = function () {
       currentState = "PLAYING";
       document.querySelector("#menu-container").style.display = "none";
-      document.querySelector("#game-container").style.display = "block";
+      document.querySelector("#game-container").style.display = "flex";
     };
 
     renderer = new Renderer(document.querySelector("canvas"));
+    window.onresize();
 
     bird = new Bird();
     await bird.init();
 
-    window.onresize();
+    pipe = new Pipe();
+    await pipe.init(renderer.height);
   }
   function update() {
+    pipe.update();
+
+    if (pipe.x < -pipe.width) {
+      pipe.reset();
+    }
+
     bird.update();
 
     if (bird.y + bird.height > renderer.height) {
@@ -29,7 +39,7 @@ window.onload = async function () {
     }
   }
   function draw() {
-    renderer.render(bird);
+    renderer.render(bird, pipe);
   }
 
   function loop() {
