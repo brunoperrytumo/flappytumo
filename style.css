@@ -1,14 +1,15 @@
 @font-face {
     font-family: gameFont;
-    src: url('assets/outside.ttf');
+    src: url('assets/font.ttf');
 }
 
 
 :root {
-    --color-a: #ff0000;
-
+    --color-a: #ff9500;
+    --color-b: #ded798;
     --btn-width: 2px;
     --btn-width-minus: -2px;
+    --speed: 0.5s;
 }
 
 * {
@@ -44,7 +45,7 @@ main {
 }
 
 #menu-container {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     flex-direction: column;
@@ -75,7 +76,9 @@ main {
 }
 
 h1,
-h2 {
+h2,
+h3,
+label {
     color: rgb(255, 255, 255);
     font-size: 64px;
     text-align: center;
@@ -84,9 +87,28 @@ h2 {
     text-shadow: 3px 3px 1px rgb(0, 0, 0);
 }
 
-h2 {
+
+
+h2,
+h3 {
+    font-size: 64px;
+    z-index: 10;
+    font-weight: bolder;
+    animation-duration: var(--speed);
+    animation-timing-function: ease;
+}
+
+#scores-label {
+    align-self: flex-start;
     padding: 20px;
-    font-size: 48px;
+}
+
+#gameover-label {
+    position: absolute;
+    margin: auto;
+    opacity: 0;
+    animation-fill-mode: forwards;
+    color: var(--color-a);
 }
 
 img {
@@ -118,4 +140,70 @@ canvas {
     height: 100%;
     object-fit: contain;
     image-rendering: pixelated;
+}
+
+#highscores-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9;
+}
+
+.scores {
+    display: flex;
+    flex: 1;
+    max-width: 80%;
+    background-color: var(--color-b);
+    padding: 10px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.scores .left,
+.scores .right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.scores label {
+    color: white;
+    font-size: 32px;
+}
+
+.scores p {
+    font-size: 28px;
+}
+
+@keyframes pop {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    20% {
+        transform: scale(0.7);
+    }
+
+    40% {
+        transform: scale(1.2);
+    }
+
+    60% {
+        transform: scale(0.5);
+    }
+
+    90% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

@@ -7,9 +7,15 @@ export default class Bird {
 
   //Physics
   #velocity = 0;
-  #gravity = 0.5;
-  #lift = -8;
-  #maxVelocity = 15;
+  #gravity = 0.1;
+  #lift = -2;
+  #maxVelocity = 5;
+
+  birdBox;
+
+  #isDead = false;
+
+  #currentState = "ALIVE";
 
   constructor() {}
 
@@ -19,6 +25,7 @@ export default class Bird {
       this.image.onload = () => {
         this.width = this.image.width;
         this.height = this.image.height;
+        this.birdBox = new DOMRect(this.x, 0, this.width, this.height);
         resolve(true);
       };
       this.image.onerror = reject;
@@ -38,14 +45,27 @@ export default class Bird {
       this.y = 0;
       this.#velocity = 0;
     }
+    this.birdBox.y = this.y;
   }
 
   jump() {
-    this.#velocity = this.#lift + (Math.random() * 2 - 1);
+    if (!this.#isDead) {
+      this.#velocity = this.#lift + (Math.random() * 2 - 1);
+    }
+  }
+
+  die() {
+    this.#currentState = "DYING";
   }
 
   reset() {
-    this.y = 200;
-    this.velocity = 0;
+    this.y = 0;
+    this.#velocity = 0;
+    this.#isDead = false;
+    this.#currentState = "ALIVE";
+  }
+
+  get state() {
+    return this.#currentState;
   }
 }

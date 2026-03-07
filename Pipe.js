@@ -1,36 +1,43 @@
 export default class Pipe {
-  image; // This will be the composite image
   x = 0;
-  y = -900;
+  y = 0;
+  #gap = 80;
+  #screenHeight;
+  #screenWidth;
+  speed = 0.6;
   width;
   height;
 
+  upperBox;
+  lowerBox;
+
+  hasPassed = false;
+
   constructor() {}
 
-  async init(screenHeight) {
-    // Pass the desired pipe height
+  async init(screenWidth, screenHeight) {
     try {
       // Load both images
-      const [pipeBodyImg, pipeTopImg] = await Promise.all([
-        this.loadImage("assets/pipe.png"),
-        this.loadImage("assets/pipe_top.png"),
+      const [pipeBodyImg, pipeCapImg] = await Promise.all([
+        this.#loadImage("assets/pipe.png"),
+        this.#loadImage("assets/pipe_top.png"),
       ]);
 
-      // Create a single composite image
-      this.image = await this.createCompositePipe(pipeBodyImg, pipeTopImg, screenHeight);
-      this.width = this.image.width;
-      this.height = this.image.height;
+      this.width = pipeCapImg.width;
+      this.height = screenHeight * 2 + this.#gap;
+      this.#screenHeight = screenHeight;
+      this.#screenWidth = screenWidth;
 
-      this.reset();
+      this.image = await this.#createCompositePipe(pipeBodyImg, pipeCapImg);
 
-      return this;
+      this.reset(screenWidth, -this.#screenHeight / 2);
     } catch (error) {
       console.error("Failed to load pipe images:", error);
       throw error;
     }
   }
 
-  loadImage(src) {
+  #loadImage(src) {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => resolve(img);
@@ -39,18 +46,16 @@ export default class Pipe {
     });
   }
 
-  createCompositePipe(pipeBodyImg, pipeTopImg, screenHeight) {
+  #createCompositePipe(pipeBodyImg, pipeCapImg) {
     return new Promise((resolve) => {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
-      const pipeWidth = pipeTopImg.width;
-      const pipeHeight = screenHeight;
-      const gapHeight = 40;
-      canvas.width = pipeWidth;
-      canvas.height = screenHeight;
+      canvas.width = this.width;
+      canvas.height = this.height;
       ctx.imageSmoothingEnabled = false;
 
+      //upper pipe
       ctx.drawImage(
         pipeBodyImg,
         0,
@@ -58,13 +63,50 @@ export default class Pipe {
         pipeBodyImg.width,
         pipeBodyImg.height,
         0,
+        -this.#gap / 2,
+        pipeBodyImg.width,
+        this.#screenHeight,
+      );
+      ctx.drawImage(
+        pipeCapImg,
+        0,
+        this.#screenHeight - pipeCapImg.height - this.#gap / 2,
+        pipeCapImg.width,
+        pipeCapImg.height,
+      );
+      this.upperBox = new DOMRect(
+        0,
+        0,
+        pipeCapImg.width,
+        this.#screenHeight - this.#gap / 2,
+      );
+
+      //lower pipe
+      ctx.drawImage(
+        pipeBodyImg,
+        0,
         0,
         pipeBodyImg.width,
-        pipeHeight,
+        pipeBodyImg.height,
+        0,
+        this.#screenHeight + this.#gap / 2,
+        pipeBodyImg.width,
+        this.#screenHeight,
       );
-      ctx.drawImage(pipeTopImg, 0, 0, pipeTopImg.width, pipeTopImg.height);
+      ctx.drawImage(
+        pipeCapImg,
+        0,
+        this.#screenHeight + this.#gap / 2,
+        pipeCapImg.width,
+        pipeCapImg.height,
+      );
+      this.lowerBox = new DOMRect(
+        0,
+        this.#screenHeight + this.#gap / 2,
+        pipeCapImg.width,
+        this.#screenHeight,
+      );
 
-      // Convert canvas to image
       canvas.toBlob((blob) => {
         const compositeImage = new Image();
         compositeImage.onload = () => resolve(compositeImage);
@@ -73,17 +115,28 @@ export default class Pipe {
     });
   }
 
-  reset() {
-    // this.y = this.randomBetween(-900, -600);
-    this.y = 0;
-    this.x = 200;
-  }
+  reset(xPos, yPos) {
+    this.x = xPos;
+    this.y = yPos;
 
-  randomBetween(min, max) {
-    return Math.random() * (max - min) + min;
+    this.upperBox.x = this.lowerBox.x = this.x;
+    this.upperBox.y = this.y;
+    this.lowerBox.y = this.y + this.#screenHeight + this.#gap / 2;
+
+    this.hasPassed = false;
   }
 
   update() {
-    // this.x -= 2;
+    this.x -= this.speed;
+    this.upperBox.x = this.lowerBox.x = this.x;
+
+    if (this.x < -this.width) {
+      const y = this.randomNum(this.#gap, this.#screenHeight - this.#gap);
+      this.reset(this.#screenWidth, y - this.#screenHeight);
+    }
+  }
+
+  randomNum(min, max) {
+    return Math.random() * (max - min) + min;
   }
 }
