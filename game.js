@@ -1,27 +1,51 @@
 import Bird from "./Bird.js";
 import Pipe from "./Pipe.js";
 import Renderer from "./Renderer.js";
-import HighscoreService from "./HighScoresService.js";
+import Scores from "./Scores.js";
 
-let scoresLabel;
-let score = 0;
 let scores;
 let currentState = "MENU";
 let renderer;
 let bird;
 let pipe;
 
+let pipes = [];
+const MAX_PIPES = 2;
+
+let playPauseButton;
+
 window.onload = async function () {
   async function setupLayout() {
     document.querySelector("#play-button").onclick = function () {
       currentState = "PLAYING";
       document.querySelector("#menu-container").style.display = "none";
+      document.querySelector("#highscores-container").style.display = "none";
       document.querySelector("#game-container").style.display = "flex";
     };
-
-    document.querySelector("#scores-button").onclick = async function () {
-      const res = await scores.getHighscores();
-      console.log(res);
+    playPauseButton = document.querySelector("#play-pause-button");
+    playPauseButton.onclick = function (e) {
+      e.stopPropagation();
+      if (currentState == "PAUSED") {
+        document.querySelector("#pause-icon").style.display = "block";
+        document.querySelector("#play-icon").style.display = "none";
+        currentState = "PLAYING";
+      } else {
+        document.querySelector("#pause-icon").style.display = "none";
+        document.querySelector("#play-icon").style.display = "block";
+        currentState = "PAUSED";
+      }
+    };
+    document.querySelector("#scores-button").onclick = function () {
+      currentState = "SCORES";
+      document.querySelector("#menu-container").style.display = "none";
+      document.querySelector("#highscores-container").style.display = "flex";
+      document.querySelector("#game-container").style.display = "none";
+    };
+    document.querySelector("#back-button").onclick = function () {
+      currentState = "MENU";
+      document.querySelector("#menu-container").style.display = "flex";
+      document.querySelector("#highscores-container").style.display = "none";
+      document.querySelector("#game-container").style.display = "none";
     };
 
     renderer = new Renderer(document.querySelector("canvas"));
@@ -29,22 +53,21 @@ window.onload = async function () {
     bird = new Bird();
     await bird.init(renderer.width);
 
+    for (let i = 0; i < MAX_PIPES; i++) {
+      let p = new Pipe();
+      await p.init(renderer.width, renderer.height);
+      p.x = renderer.width * i;
+      pipes.push(p);
+    }
+
     pipe = new Pipe();
     await pipe.init(renderer.width, renderer.height);
 
-    scores = new HighscoreService();
-    scoresLabel = document.querySelector("#scores-label");
-    const res = await scores.getHighscores();
+    scores = new Scores();
+    await scores.init();
   }
 
-  function updateScore() {
-    score++;
-    scoresLabel.innerText = score;
-    scoresLabel.style.animationName = "pop";
-    setTimeout(function () {
-      scoresLabel.style.animationName = "";
-    }, 500);
-  }
+  function reset() {}
 
   function checkCollision(rect1, rect2) {
     return (
@@ -70,14 +93,13 @@ window.onload = async function () {
     }
 
     if (bird.x > pipe.x && !pipe.hasPassed) {
-      updateScore();
+      scores.updateScore();
       pipe.hasPassed = true;
     }
   }
   function draw() {
     renderer.render(bird, pipe);
   }
-
   function loop() {
     switch (currentState) {
       case "PLAYING":
@@ -87,9 +109,10 @@ window.onload = async function () {
       case "ENDING":
         bird.update();
         draw();
+        playPauseButton.style.display = "none";
         if (bird.y > renderer.height) {
           currentState = "GAME_OVER";
-          document.querySelector("#gameover-label").style.animationName = "pop";
+          document.querySelector("#gameover-label").style.display = "block";
         }
         break;
       case "GAME_OVER":
@@ -104,6 +127,7 @@ window.onload = async function () {
 };
 
 window.onclick = function () {
+  console.log("click");
   if (currentState === "PLAYING") {
     bird.jump();
   }

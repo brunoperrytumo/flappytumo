@@ -31,6 +31,8 @@ export default class Pipe {
       this.image = await this.#createCompositePipe(pipeBodyImg, pipeCapImg);
 
       this.reset(screenWidth, -this.#screenHeight / 2);
+
+      console.log("done");
     } catch (error) {
       console.error("Failed to load pipe images:", error);
       throw error;

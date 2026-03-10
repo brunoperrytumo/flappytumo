@@ -15,22 +15,27 @@
         <div id="menu-container">
             <h1>Flappy Tumo!</h1>
             <div id="buttons-container">
-                <button id="play-button">
-                    <img src="assets/play_button.png" />
-                </button>
-                <button id="scores-button">
-                    <img src="assets/scores_button.png" />
-                </button>
+                <button id="play-button">JOGAR</button>
+                <button id="scores-button">SCORES</button>
             </div>
         </div>
         <div id="game-container">
             <canvas width="150" height="250"></canvas>
-            <h2 id="scores-label">0</h2>
+            <h2 id="score-label">0</h2>
             <h3 id="gameover-label">GAME OVER!</h3>
-        </div>
+            <button id="play-pause-button">
+                <svg id="pause-icon" width="25" height="25" viewBox="0 0 5 5" fill="white">
+                    <rect x="0" y="0" width="2" height="5" />
+                    <rect x="3" y="0" width="2" height="5" />
+                </svg>
 
+                <svg id="play-icon" width="25" height="25" viewBox="0 0 4 5" fill="white">
+                    <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
+                </svg>
+            </button>
+        </div>
         <div id="highscores-container">
-            <div class="scores">
+            <div class="scores pixel-corners">
                 <div class="left">
                     <label>Name</label>
                 </div>
@@ -38,6 +43,7 @@
                     <label>Score</label>
                 </div>
             </div>
+            <button id="back-button">VOLTAR</button>
         </div>
     </main>
 </body>

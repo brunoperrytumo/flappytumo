@@ -38,20 +38,24 @@ export default class HighscoreService {
 
   async getHighscores() {
     const result = await this.callFunction({ action: "GET_HIGHSCORES" });
+    for (let i = 0; i < 5; i++) {
+      this.#buildScore(result.highscores[i]);
+    }
+    return result.highscores || [];
+  }
+
+  #buildScore(score = null) {
     const scoresElem = document.querySelector(".scores");
     const leftCol = scoresElem.querySelector(".left");
     const rightCol = scoresElem.querySelector(".right");
-    console.log(result);
-    result.highscores.forEach((res) => {
-      let pElem = document.createElement("p");
-      pElem.innerText = res.name;
-      leftCol.appendChild(pElem);
-
-      pElem = document.createElement("p");
-      pElem.innerText = res.score;
-      rightCol.appendChild(pElem);
-    });
-    return result.highscores || [];
+    let pElem = document.createElement("p");
+    if (!score) pElem.className = "no-score";
+    pElem.innerText = score?.name || "---";
+    leftCol.appendChild(pElem);
+    pElem = document.createElement("p");
+    if (!score) pElem.className = "no-score";
+    pElem.innerText = score?.score || "---";
+    rightCol.appendChild(pElem);
   }
 
   async submitScore(playerName, score) {
