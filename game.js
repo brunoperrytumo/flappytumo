@@ -7,7 +7,6 @@ let scores;
 let currentState = "MENU";
 let renderer;
 let bird;
-let pipe;
 
 let pipes = [];
 const MAX_PIPES = 2;
@@ -18,6 +17,7 @@ window.onload = async function () {
   async function setupLayout() {
     document.querySelector("#play-button").onclick = function () {
       currentState = "PLAYING";
+      reset();
       document.querySelector("#menu-container").style.display = "none";
       document.querySelector("#highscores-container").style.display = "none";
       document.querySelector("#game-container").style.display = "flex";
@@ -40,12 +40,27 @@ window.onload = async function () {
       document.querySelector("#menu-container").style.display = "none";
       document.querySelector("#highscores-container").style.display = "flex";
       document.querySelector("#game-container").style.display = "none";
+      document.querySelector("#game-ui").style.display = "none";
     };
     document.querySelector("#back-button").onclick = function () {
       currentState = "MENU";
       document.querySelector("#menu-container").style.display = "flex";
       document.querySelector("#highscores-container").style.display = "none";
       document.querySelector("#game-container").style.display = "none";
+      document.querySelector("#game-ui").style.display = "none";
+    };
+    document.querySelector("#restart-button").onclick = function () {
+      reset();
+      currentState = "PLAYING";
+      document.querySelector("#game-ui").style.display = "none";
+    };
+    document.querySelector("#home-button").onclick = function () {
+      reset();
+      currentState = "MENU";
+      document.querySelector("#menu-container").style.display = "flex";
+      document.querySelector("#highscores-container").style.display = "none";
+      document.querySelector("#game-container").style.display = "none";
+      document.querySelector("#game-ui").style.display = "none";
     };
 
     renderer = new Renderer(document.querySelector("canvas"));
@@ -56,18 +71,23 @@ window.onload = async function () {
     for (let i = 0; i < MAX_PIPES; i++) {
       let p = new Pipe();
       await p.init(renderer.width, renderer.height);
-      p.x = renderer.width * i;
+      p.x = renderer.width * (i + 1);
       pipes.push(p);
     }
-
-    pipe = new Pipe();
-    await pipe.init(renderer.width, renderer.height);
 
     scores = new Scores();
     await scores.init();
   }
 
-  function reset() {}
+  function reset() {
+    bird.reset();
+    scores.reset();
+    for (let i = 0; i < MAX_PIPES; i++) {
+      const p = pipes[i];
+      p.reset();
+      p.x = renderer.width * (i + 1);
+    }
+  }
 
   function checkCollision(rect1, rect2) {
     return (
@@ -79,26 +99,31 @@ window.onload = async function () {
   }
 
   function update() {
-    pipe.update();
+    for (let i = 0; i < MAX_PIPES; i++) {
+      pipes[i].update();
+    }
     bird.update();
 
-    if (
-      bird.y + bird.height >= renderer.height ||
-      checkCollision(bird.birdBox, pipe.upperBox) ||
-      checkCollision(bird.birdBox, pipe.lowerBox)
-    ) {
-      currentState = "ENDING";
-      bird.jump();
-      bird.die();
-    }
-
-    if (bird.x > pipe.x && !pipe.hasPassed) {
-      scores.updateScore();
-      pipe.hasPassed = true;
+    for (let i = 0; i < MAX_PIPES; i++) {
+      const p = pipes[i];
+      if (
+        bird.y + bird.height >= renderer.height ||
+        checkCollision(bird.birdBox, p.upperBox) ||
+        checkCollision(bird.birdBox, p.lowerBox)
+      ) {
+        currentState = "ENDING";
+        bird.jump();
+        bird.die();
+        break;
+      }
+      if (bird.x > p.x && !p.hasPassed) {
+        scores.updateScore();
+        p.hasPassed = true;
+      }
     }
   }
   function draw() {
-    renderer.render(bird, pipe);
+    renderer.render(bird, pipes);
   }
   function loop() {
     switch (currentState) {
@@ -112,7 +137,8 @@ window.onload = async function () {
         playPauseButton.style.display = "none";
         if (bird.y > renderer.height) {
           currentState = "GAME_OVER";
-          document.querySelector("#gameover-label").style.display = "block";
+          scores.checkForEligibleScore();
+          document.querySelector("#game-ui").style.display = "flex";
         }
         break;
       case "GAME_OVER":
@@ -127,7 +153,6 @@ window.onload = async function () {
 };
 
 window.onclick = function () {
-  console.log("click");
   if (currentState === "PLAYING") {
     bird.jump();
   }

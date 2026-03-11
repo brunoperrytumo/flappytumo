@@ -1,7 +1,7 @@
 export default class Pipe {
   x = 0;
   y = 0;
-  #gap = 80;
+  #gap = 60;
   #screenHeight;
   #screenWidth;
   speed = 0.6;
@@ -30,9 +30,7 @@ export default class Pipe {
 
       this.image = await this.#createCompositePipe(pipeBodyImg, pipeCapImg);
 
-      this.reset(screenWidth, -this.#screenHeight / 2);
-
-      console.log("done");
+      this.reset();
     } catch (error) {
       console.error("Failed to load pipe images:", error);
       throw error;
@@ -117,9 +115,10 @@ export default class Pipe {
     });
   }
 
-  reset(xPos, yPos) {
-    this.x = xPos;
-    this.y = yPos;
+  reset() {
+    this.x = this.#screenWidth + this.#screenWidth / 2;
+    this.y =
+      this.randomNum(this.#gap, this.#screenHeight - this.#gap) - this.#screenHeight;
 
     this.upperBox.x = this.lowerBox.x = this.x;
     this.upperBox.y = this.y;
@@ -133,8 +132,7 @@ export default class Pipe {
     this.upperBox.x = this.lowerBox.x = this.x;
 
     if (this.x < -this.width) {
-      const y = this.randomNum(this.#gap, this.#screenHeight - this.#gap);
-      this.reset(this.#screenWidth, y - this.#screenHeight);
+      this.reset();
     }
   }
 

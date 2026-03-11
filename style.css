@@ -26,6 +26,10 @@
     font-family: gameFont;
 }
 
+*:focus {
+    outline: none;
+}
+
 html,
 body {
     display: flex;
@@ -60,7 +64,7 @@ main {
     gap: 50px;
 }
 
-#buttons-container {
+.buttons-container {
     display: flex;
     justify-content: stretch;
     flex: 1;
@@ -68,9 +72,6 @@ main {
     gap: 20px;
 }
 
-#buttons-container img {
-    flex: 1;
-}
 
 #game-container {
     display: none;
@@ -83,8 +84,7 @@ main {
 
 h1,
 h2,
-h3,
-label {
+h3 {
     color: rgb(255, 255, 255);
     font-size: 64px;
     text-align: center;
@@ -107,10 +107,21 @@ h3 {
     padding: 20px;
 }
 
-#gameover-label {
-    display: none;
+
+#game-ui {
     position: absolute;
     margin: auto;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#gameover-label {
+    display: block;
     color: var(--color-a);
 }
 
@@ -139,11 +150,15 @@ button {
     border-bottom: 9px solid var(--color-c);
     cursor: pointer;
     font-family: uiFont;
-    font-size: clamp(22px, -2rem + 9.6vw, 32px);
+    font-size: clamp(18px, -2rem + 9.6vw, 32px);
     line-height: 32px;
     letter-spacing: 2px;
     color: white;
     text-shadow: 0px 5px #00000060;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 button:active {
@@ -165,6 +180,51 @@ canvas {
     height: 100%;
     object-fit: contain;
     image-rendering: pixelated;
+}
+
+/* SCORE INPUT */
+#score-input {
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+    max-width: 90%;
+    gap: 20px;
+    background-color: var(--color-b);
+    align-items: center;
+}
+
+#score-input h4 {
+    font-family: uiFont;
+    color: var(--color-c);
+    font-size: 32px;
+}
+
+#score-input input {
+    font-size: 28px;
+    font-family: uiFont;
+    padding: 0px;
+    text-align: center;
+    letter-spacing: 5px;
+    background-color: transparent;
+    text-transform: uppercase;
+    flex: 1;
+    width: 100%;
+    border: none;
+    max-width: calc(4 * 28px);
+    border-bottom: 4px solid transparent;
+    border-image: repeating-linear-gradient(to right,
+            var(--color-c) 0,
+            var(--color-c) 20px,
+            transparent 20px,
+            transparent 40px) 0 0 100% 0;
+    border-image-slice: 1;
+    border-image-width: 0 0 4px 0;
+}
+
+#score-input button {
+    height: 60px;
+    width: 100%;
 }
 
 
@@ -237,4 +297,45 @@ canvas {
             4px 4px,
             4px 8px,
             0px 8px);
+}
+
+#loader {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999;
+}
+
+#loader label {
+    font-size: 32px;
+    color: white;
+    font-family: uiFont;
+}
+
+#loader svg {
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-name: loader;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: none;
+    pointer-events: none;
+}
+
+@keyframes loader {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: 360deg;
+    }
 }
