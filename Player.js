@@ -1,4 +1,4 @@
-export default class Bird {
+export default class Player {
   image;
   x = 40;
   y = 0;
@@ -11,7 +11,7 @@ export default class Bird {
   #lift = -2;
   #maxVelocity = 5;
 
-  birdBox;
+  playerBox;
 
   #isDead = false;
 
@@ -25,11 +25,11 @@ export default class Bird {
       this.image.onload = () => {
         this.width = this.image.width;
         this.height = this.image.height;
-        this.birdBox = new DOMRect(this.x, 0, this.width, this.height);
+        this.playerBox = new DOMRect(this.x, 0, this.width, this.height);
         resolve(true);
       };
       this.image.onerror = reject;
-      this.image.src = "assets/bird.png";
+      this.image.src = "assets/submarine.png";
     });
   }
 
@@ -45,7 +45,7 @@ export default class Bird {
       this.y = 0;
       this.#velocity = 0;
     }
-    this.birdBox.y = this.y;
+    this.playerBox.y = this.y;
   }
 
   jump() {

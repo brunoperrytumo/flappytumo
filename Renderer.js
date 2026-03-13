@@ -6,7 +6,7 @@ export default class Renderer {
     this.#context = this.#canvas.getContext("2d");
   }
 
-  render(bird, pipes) {
+  render(player, pipes) {
     this.#context.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
     this.#context.imageSmoothingEnabled = false;
 
@@ -14,7 +14,13 @@ export default class Renderer {
       let p = pipes[i];
       this.#context.drawImage(p.image, p.x, p.y, p.width, p.height);
     }
-    this.#context.drawImage(bird.image, bird.x, bird.y, bird.width, bird.height);
+    this.#context.drawImage(
+      player.image,
+      player.x,
+      player.y,
+      player.width,
+      player.height,
+    );
   }
 
   get width() {

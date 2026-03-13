@@ -1,4 +1,4 @@
-import Bird from "./Bird.js";
+import Player from "./Player.js";
 import Pipe from "./Pipe.js";
 import Renderer from "./Renderer.js";
 import Scores from "./Scores.js";
@@ -6,7 +6,7 @@ import Scores from "./Scores.js";
 let scores;
 let currentState = "MENU";
 let renderer;
-let bird;
+let player;
 
 let pipes = [];
 const MAX_PIPES = 2;
@@ -65,8 +65,8 @@ window.onload = async function () {
 
     renderer = new Renderer(document.querySelector("canvas"));
 
-    bird = new Bird();
-    await bird.init(renderer.width);
+    player = new Player();
+    await player.init(renderer.width);
 
     for (let i = 0; i < MAX_PIPES; i++) {
       let p = new Pipe();
@@ -80,7 +80,7 @@ window.onload = async function () {
   }
 
   function reset() {
-    bird.reset();
+    player.reset();
     scores.reset();
     for (let i = 0; i < MAX_PIPES; i++) {
       const p = pipes[i];
@@ -102,28 +102,28 @@ window.onload = async function () {
     for (let i = 0; i < MAX_PIPES; i++) {
       pipes[i].update();
     }
-    bird.update();
+    player.update();
 
     for (let i = 0; i < MAX_PIPES; i++) {
       const p = pipes[i];
       if (
-        bird.y + bird.height >= renderer.height ||
-        checkCollision(bird.birdBox, p.upperBox) ||
-        checkCollision(bird.birdBox, p.lowerBox)
+        player.y + player.height >= renderer.height ||
+        checkCollision(player.playerBox, p.upperBox) ||
+        checkCollision(player.playerBox, p.lowerBox)
       ) {
         currentState = "ENDING";
-        bird.jump();
-        bird.die();
+        player.jump();
+        player.die();
         break;
       }
-      if (bird.x > p.x && !p.hasPassed) {
+      if (player.x > p.x && !p.hasPassed) {
         scores.updateScore();
         p.hasPassed = true;
       }
     }
   }
   function draw() {
-    renderer.render(bird, pipes);
+    renderer.render(player, pipes);
   }
   function loop() {
     switch (currentState) {
@@ -132,10 +132,10 @@ window.onload = async function () {
         draw();
         break;
       case "ENDING":
-        bird.update();
+        player.update();
         draw();
         playPauseButton.style.display = "none";
-        if (bird.y > renderer.height) {
+        if (player.y > renderer.height) {
           currentState = "GAME_OVER";
           scores.checkForEligibleScore();
           document.querySelector("#game-ui").style.display = "flex";
@@ -154,6 +154,6 @@ window.onload = async function () {
 
 window.onclick = function () {
   if (currentState === "PLAYING") {
-    bird.jump();
+    player.jump();
   }
 };
