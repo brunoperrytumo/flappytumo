@@ -3,7 +3,6 @@
     src: url('assets/minecraft.ttf');
 }
 
-
 :root {
     --color-a: #e6611d;
     --color-b: #ded798;
@@ -19,6 +18,7 @@
     margin: 0;
     padding: 0;
     font-family: uiFont;
+    color: white;
 }
 
 *:focus {
@@ -48,13 +48,68 @@ img {
     image-rendering: pixelated;
 }
 
+button {
+    padding: 10px;
+    font-size: 24px;
+    border: 2px solid var(--color-c);
+    border-bottom: 5px solid var(--color-c);
+    background-color: var(--color-a);
+    cursor: pointer;
+}
+
+button:active {
+    border-bottom: 2px solid var(--color-c);
+}
+
 .view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     inset: 0;
 }
+
 .container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+/* VIEWS */
+#main-menu {
+    /* background-color: red; */
+}
+
+
+/* GAME VIEW */
+#game {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+}
+
+#images-container {
+    position: absolute;
+    inset: 0;
+}
+
+#images-container img {
+    position: absolute;
+}
+
+#game-ui {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    flex-direction: column;
+}
+
+#game-ui button {
+    width: 52px;
+    height: 52px;
+}
+
+#highscores {
+    /* background-color: green; */
 }

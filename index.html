@@ -1,25 +1,40 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-    <script type="module" src="game.js"></script>
-  </head>
 
-  <body>
-    <main>
-      <div id="main-menu" class="view">
-        <img src="" />
-        <div class="container">
-          <button>JOGAR</button>
-          <button>SCORES</button>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="game.js"></script>
+</head>
+
+<body>
+  <main>
+    <div id="main-menu" class="view">
+      <div class="container">
+        <button id="play-button">JOGAR</button>
+        <button id="highscores-button">SCORES</button>
       </div>
+    </div>
 
-      <div id="game" class="view"></div>
-      <div id="highscores" class="view"></div>
-    </main>
-  </body>
+    <div id="game" class="view">
+      <div id="images-container"></div>
+      <div id="game-ui" class="container">
+        <button id="up-button">
+          <svg width="16" height="16" viewBox="0 0 4 5" style="fill:white;rotate: -90deg">
+            <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
+          </svg>
+        </button>
+        <button id="down-button"><svg width="16" height="16" viewBox="0 0 4 5" style="fill:white;rotate: 90deg">
+            <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
+          </svg></button>
+      </div>
+    </div>
+    <div id="highscores" class="view">
+      <button id="back-button">VOLTAR</button>
+    </div>
+  </main>
+</body>
+
 </html>
