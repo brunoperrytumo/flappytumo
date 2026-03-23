@@ -5,7 +5,8 @@ export default class Asteroid extends Character {
   #screenWidth;
   #screenHeight;
 
-  #rotateDirections = "cw";
+  #images = ["asteroid.png", "asteroid2.png", "moon1.png"];
+
   constructor() {
     super();
 
@@ -15,7 +16,8 @@ export default class Asteroid extends Character {
   }
 
   async init() {
-    await this.loadImage("assets/asteroid.png");
+    const img = Math.round(this.randomNumber(0, this.#images.length - 1));
+    await this.loadImage(`assets/${this.#images[img]}`);
 
     this.width = this.image.width;
     this.height = this.image.height;
@@ -24,19 +26,17 @@ export default class Asteroid extends Character {
   }
 
   #reset() {
-    // this.scale = this.randomNumber(1, 3);
-    this.scale = 1;
-    // this.x = this.#screenWidth + this.randomNumber(20, 350);
-    this.x = 40;
-    this.y = this.randomNumber(0, this.#screenHeight);
+    this.scale = this.randomNumber(1, 3);
+    this.x = this.randomNumber(0, this.#screenWidth - this.width);
+    this.y = this.randomNumber(0, -this.#screenHeight);
     this.speed = this.randomNumber(1, 5);
   }
 
   update() {
-    // this.x -= this.speed;
-    // this.rotation -= this.speed;
+    this.y += this.speed;
+    this.rotation -= this.speed;
 
-    if (this.x < -this.width) {
+    if (this.y > this.#screenHeight) {
       this.#reset();
     }
     super.update();

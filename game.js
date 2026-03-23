@@ -1,6 +1,6 @@
 import Asteroid from "./Asteroid.js";
-import PixelCollision from "./PixelConllision.js";
 import Satelite from "./Satelite.js";
+import StarField from "./StarField.js";
 
 window.onload = async () => {
   //UI STUFF
@@ -17,15 +17,16 @@ window.onload = async () => {
   document.querySelector("#back-button").onclick = () => {
     showView(mainMenuView);
   };
-  document.querySelector("#up-button").onclick = () => {
-    satelite.up();
+  document.querySelector("#left-button").onclick = () => {
+    satelite.left();
   };
-  document.querySelector("#down-button").onclick = () => {
-    satelite.down();
+  document.querySelector("#right-button").onclick = () => {
+    satelite.right();
   };
 
-  const MAX_ASTEROIDS = 1;
-  const collisionDetector = new PixelCollision();
+  const starField = new StarField();
+
+  const MAX_ASTEROIDS = 5;
 
   const asteroids = [];
   for (let i = 0; i < MAX_ASTEROIDS; i++) {
@@ -35,9 +36,8 @@ window.onload = async () => {
   }
   const satelite = new Satelite();
   await satelite.init();
-  satelite.scale = 1;
   satelite.x = 20;
-  satelite.y = 100;
+  satelite.y = 700;
 
   const showView = (view) => {
     mainMenuView.style.display = "none";
@@ -47,21 +47,26 @@ window.onload = async () => {
     view.style.display = "flex";
   };
 
-  const frameSkip = 2; // Check collisions every 2 frames for performance
-  let frameCount = 0;
-  const loop = (currentTime) => {
+  const checkCollision = (a, b) => {
+    const dx = a.cx - b.cx;
+    const dy = a.cy - b.cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    return dist < a.radius + b.radius;
+  };
+
+  const loop = () => {
+    starField.update();
     satelite.update();
     for (let i = 0; i < asteroids.length; i++) {
       asteroids[i].update();
     }
 
-    frameCount++;
-    if (frameCount % frameSkip === 0) {
-      for (let i = 0; i < asteroids.length; i++) {
-        if (collisionDetector.checkCollision(satelite, asteroids[i])) {
-          console.log("GAME OVER - Pixel perfect collision!");
-          return;
-        }
+    const satCircle = satelite.circle();
+    for (let i = 0; i < asteroids.length; i++) {
+      if (checkCollision(satCircle, asteroids[i].circle())) {
+        satelite.image.style.background = "red";
+        asteroids[i].image.style.background = "blue";
+        return;
       }
     }
 

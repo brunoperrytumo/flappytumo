@@ -19,14 +19,15 @@
     </div>
 
     <div id="game" class="view">
+      <canvas id="starfield"></canvas>
       <div id="images-container"></div>
       <div id="game-ui" class="container">
-        <button id="up-button">
-          <svg width="16" height="16" viewBox="0 0 4 5" style="fill:white;rotate: -90deg">
+        <button id="left-button">
+          <svg width="16" height="16" viewBox="0 0 4 5" style="fill:white;rotate: 180deg">
             <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
           </svg>
         </button>
-        <button id="down-button"><svg width="16" height="16" viewBox="0 0 4 5" style="fill:white;rotate: 90deg">
+        <button id="right-button"><svg width="16" height="16" viewBox="0 0 4 5" style="fill:white;">
             <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
           </svg></button>
       </div>
@@ -34,6 +35,8 @@
     <div id="highscores" class="view">
       <button id="back-button">VOLTAR</button>
     </div>
+
+    <img id="blackhole" src="assets/blackhole.png" alt="">
   </main>
 </body>
 

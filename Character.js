@@ -41,4 +41,11 @@ export default class Character {
   rect() {
     return this.image.getBoundingClientRect();
   }
+
+  circle() {
+    const cx = this.x + (this.width * this.scale) / 2;
+    const cy = this.y + (this.height * this.scale) / 2;
+    const radius = (Math.max(this.width, this.height) * this.scale) / 2;
+    return { cx, cy, radius };
+  }
 }

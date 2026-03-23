@@ -1,7 +1,7 @@
 import Character from "./Character.js";
 
 export default class Satelite extends Character {
-  #velocityY = 0;
+  #velocityX = 0;
   #thrustPower = 0.3;
   #maxSpeed = 5;
   constructor() {
@@ -15,21 +15,19 @@ export default class Satelite extends Character {
   }
 
   update() {
-    this.y += this.#velocityY;
-
-    this.#velocityY = Math.max(
+    this.#velocityX = Math.max(
       -this.#maxSpeed,
-      Math.min(this.#maxSpeed, this.#velocityY),
+      Math.min(this.#maxSpeed, this.#velocityX),
     );
-
+    this.x += this.#velocityX;
     super.update();
   }
 
-  up() {
-    this.#velocityY -= this.#thrustPower;
+  left() {
+    this.#velocityX -= this.#thrustPower;
   }
 
-  down() {
-    this.#velocityY += this.#thrustPower;
+  right() {
+    this.#velocityX += this.#thrustPower;
   }
 }

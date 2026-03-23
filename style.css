@@ -89,9 +89,16 @@ button:active {
     overflow: hidden;
 }
 
+#starfield {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
 #images-container {
     position: absolute;
     inset: 0;
+    z-index: 1;
 }
 
 #images-container img {
@@ -102,14 +109,29 @@ button:active {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    flex-direction: column;
+    left: 10px;
+    flex: 1;
+    z-index: 2;
 }
 
 #game-ui button {
     width: 52px;
-    height: 52px;
+    flex: 1;
+    opacity: 0.8;
 }
 
-#highscores {
-    /* background-color: green; */
+#game-ui button:active {
+    opacity: 1;
+}
+
+/* #highscores {
+    background-color: green;
+} */
+
+#blackhole {
+    position: absolute;
+    width: 128px;
+    height: 128px;
+    z-index: 9;
+    transform: rotate3d(1, 1, 1, 80deg);
 }
