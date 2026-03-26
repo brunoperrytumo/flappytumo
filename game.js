@@ -2,10 +2,10 @@
 import Asteroid from "./Asteroid.js";
 import Renderer from "./Renderer.js";
 import Rocket from "./Rocket.js";
+import InputHandler from "./InputHandler.js";
 
 const MAX_ASTEROIDS = 0;
 
-// Returns true if two entities' bounding boxes overlap
 function checkCollision(a, b) {
   const dist = Math.hypot(b.x - a.x, b.y - a.y);
   return dist < a.getRadius() + b.getRadius();
@@ -14,7 +14,10 @@ function checkCollision(a, b) {
 window.onload = async () => {
   const renderer = new Renderer();
   const rocket = new Rocket();
+  const input = new InputHandler();
   await rocket.init();
+
+  rocket.rotation = 0;
 
   const asteroids = [];
   for (let i = 0; i < MAX_ASTEROIDS; i++) {
@@ -27,6 +30,9 @@ window.onload = async () => {
   let score = 0;
 
   const loop = () => {
+    if (input.isButtonDown("left")) rocket.left();
+    if (input.isButtonDown("right")) rocket.right();
+
     renderer.reset();
     rocket.update();
 
@@ -34,21 +40,13 @@ window.onload = async () => {
       const asteroid = asteroids[i];
       asteroid.update();
       renderer.render(asteroid);
-      renderer.render(rocket);
-      if (checkCollision(rocket, asteroid)) {
-        // Hit! Reset the asteroid and deduct a life
-        // asteroid.reset();
-        lives = Math.max(0, lives - 1);
-        console.log(`Hit! Lives remaining: ${lives}`);
 
+      if (checkCollision(rocket, asteroid)) {
+        lives = Math.max(0, lives - 1);
         if (lives === 0) {
           console.log("Game over!");
           return;
         }
-      } else {
-        // Asteroid passed safely — award a point when it goes off screen
-        // (Asteroid.update() calls #reset internally when y > screenHeight,
-        //  so we track the wrap by checking if y jumped back to negative)
       }
     }
 

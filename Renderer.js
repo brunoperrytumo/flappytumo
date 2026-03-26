@@ -13,6 +13,7 @@ export default class Renderer {
 
   render(entity) {
     this.ctx.save();
+    this.ctx.translate(entity.x, entity.y);
     this.ctx.rotate(entity.rotation);
     this.ctx.scale(entity.scale, entity.scale);
     this.ctx.drawImage(
@@ -21,8 +22,8 @@ export default class Renderer {
       entity.frameY,
       entity.width,
       entity.height,
-      entity.x,
-      entity.y,
+      -Math.round(entity.width / 2), // dest x — centered on origin
+      -Math.round(entity.height / 2),
       entity.width,
       entity.height,
     );

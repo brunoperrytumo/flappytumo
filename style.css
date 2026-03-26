@@ -39,6 +39,7 @@ button {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    font-size: 1.4rem;
 }
 
 button:active {
@@ -70,6 +71,7 @@ canvas {
 }
 
 #game {
+    display: flex;
     background-color: orange;
     align-self: flex-end;
     flex: 1;

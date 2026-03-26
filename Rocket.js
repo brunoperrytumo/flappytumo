@@ -3,7 +3,7 @@ import Character from "./Character.js";
 export default class Rocket extends Character {
   #state = "normal";
   #velocityX = 0;
-  #thrustPower = 0.3;
+  #thrustPower = 1;
   #maxSpeed = 5;
   constructor() {
     super();
@@ -15,7 +15,7 @@ export default class Rocket extends Character {
     this.width = Rocket.FRAME_WIDTH;
     this.height = Rocket.FRAME_HEIGHT;
 
-    this.x = Math.round(this.canvas.width / 2 - this.width / 2);
+    this.x = Math.round(this.canvas.width / 2);
     this.y = Math.round(this.canvas.height - this.height * 2);
   }
 
@@ -27,19 +27,20 @@ export default class Rocket extends Character {
     this.x += this.#velocityX;
 
     const hw = (this.width * this.scale) / 2;
-    this.x = Math.max(hw, Math.min(this.canvas.width - hw, this.x));
+    this.x = Math.round(Math.max(hw, Math.min(this.canvas.width - hw, this.x)));
 
-    if (this.#velocityX < -0.1) this.#state = "left";
-    else if (this.#velocityX > 0.1) this.#state = "right";
+    if (this.#velocityX < -0.1) this.#state = "right";
+    else if (this.#velocityX > 0.1) this.#state = "left";
     else this.#state = "normal";
 
     super.update();
+    this.#velocityX = 0;
   }
   left() {
-    this.#velocityX -= this.#thrustPower;
+    this.#velocityX = -this.#thrustPower;
   }
   right() {
-    this.#velocityX += this.#thrustPower;
+    this.#velocityX = this.#thrustPower;
   }
 
   // Returns the source rect to cut from the sprite sheet
