@@ -34,6 +34,17 @@ body {
     justify-content: center;
 }
 
+button {
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+button:active {
+    scale: 0.9;
+}
+
 main {
     position: relative;
     display: flex;
@@ -41,97 +52,25 @@ main {
     height: 100%;
     max-width: 540px;
     max-height: 900px;
-    background: linear-gradient(#001125, #334463);
+    background: #020304;
 }
 
-img {
+canvas {
+    flex: 1;
+    aspect-ratio: 3 / 5;
+    touch-action: manipulation;
     image-rendering: pixelated;
 }
 
-button {
-    padding: 10px;
-    font-size: 24px;
-    border: 2px solid var(--color-c);
-    border-bottom: 5px solid var(--color-c);
-    background-color: var(--color-a);
-    cursor: pointer;
-}
-
-button:active {
-    border-bottom: 2px solid var(--color-c);
-}
-
-.view {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* UI */
+#ui {
     position: absolute;
     inset: 0;
-}
-
-.container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
 }
 
-/* VIEWS */
-#main-menu {
-    /* background-color: red; */
-}
-
-
-/* GAME VIEW */
 #game {
-    position: relative;
+    background-color: orange;
+    align-self: flex-end;
     flex: 1;
-    overflow: hidden;
-}
-
-#starfield {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
-
-#images-container {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-}
-
-#images-container img {
-    position: absolute;
-}
-
-#game-ui {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    left: 10px;
-    flex: 1;
-    z-index: 2;
-}
-
-#game-ui button {
-    width: 52px;
-    flex: 1;
-    opacity: 0.8;
-}
-
-#game-ui button:active {
-    opacity: 1;
-}
-
-/* #highscores {
-    background-color: green;
-} */
-
-#blackhole {
-    position: absolute;
-    width: 128px;
-    height: 128px;
-    z-index: 9;
-    transform: rotate3d(1, 1, 1, 80deg);
 }
