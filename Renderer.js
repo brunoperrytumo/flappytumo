@@ -11,6 +11,18 @@ export default class Renderer {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  renderBackground(background) {
+    for (const star of background.stars) {
+      this.ctx.drawImage(
+        background.image, // same Image object reused for every star
+        star.x,
+        star.y,
+        star.size,
+        star.size,
+      );
+    }
+  }
+
   render(entity) {
     this.ctx.save();
     this.ctx.translate(entity.x, entity.y);
