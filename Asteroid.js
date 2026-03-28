@@ -5,7 +5,7 @@ export default class Asteroid extends Character {
   #screenWidth;
   #screenHeight;
 
-  #images = ["asteroid.png", "asteroid2.png", "moon1.png"];
+  #images = ["asteroid3.png"];
 
   constructor() {
     super();
@@ -26,10 +26,10 @@ export default class Asteroid extends Character {
   }
 
   #reset() {
-    this.scale = this.randomNumber(0.2, 1);
+    this.scale = this.randomNumber(1, 1.5);
     this.x = this.randomNumber(0, this.#screenWidth - this.width);
     this.y = this.randomNumber(0, -this.#screenHeight);
-    this.speed = this.randomNumber(0.1, 0.5);
+    this.speed = this.randomNumber(0.1, 1);
   }
 
   update() {

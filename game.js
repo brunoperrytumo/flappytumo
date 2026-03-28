@@ -4,7 +4,7 @@ import Renderer from "./Renderer.js";
 import Rocket from "./Rocket.js";
 import InputHandler from "./InputHandler.js";
 
-const MAX_ASTEROIDS = 0;
+const MAX_ASTEROIDS = 4;
 
 function checkCollision(a, b) {
   const dist = Math.hypot(b.x - a.x, b.y - a.y);
@@ -15,9 +15,8 @@ window.onload = async () => {
   const renderer = new Renderer();
   const rocket = new Rocket();
   const input = new InputHandler();
-  await rocket.init();
 
-  rocket.rotation = 0;
+  await rocket.init();
 
   const asteroids = [];
   for (let i = 0; i < MAX_ASTEROIDS; i++) {
@@ -34,6 +33,7 @@ window.onload = async () => {
     if (input.isButtonDown("right")) rocket.right();
 
     renderer.reset();
+
     rocket.update();
 
     for (let i = 0; i < MAX_ASTEROIDS; i++) {

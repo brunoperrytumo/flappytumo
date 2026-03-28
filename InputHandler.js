@@ -29,6 +29,7 @@ export default class InputHandler {
       a: "left",
       ArrowRight: "right",
       d: "right",
+      Space: "fire",
     };
 
     window.addEventListener("keydown", (e) => {
