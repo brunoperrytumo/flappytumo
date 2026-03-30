@@ -1,3 +1,4 @@
+// Renderer.js
 export default class Renderer {
   canvas;
   ctx;
@@ -13,17 +14,26 @@ export default class Renderer {
 
   renderBackground(background) {
     for (const star of background.stars) {
-      this.ctx.drawImage(
-        background.image, // same Image object reused for every star
-        star.x,
-        star.y,
-        star.size,
-        star.size,
-      );
+      this.ctx.drawImage(background.image, star.x, star.y, star.size, star.size);
     }
   }
 
-  render(entity) {
+  renderExplosion(explosion) {
+    for (const p of explosion.particles) {
+      if (p.life <= 0) continue;
+
+      const alpha = Math.min(p.life / 0.5, 1);
+      this.ctx.globalAlpha = alpha;
+
+      this.ctx.fillStyle = p.size > 2 ? "#484848" : "#ffffff";
+
+      const size = Math.ceil(p.size * 2);
+      this.ctx.fillRect(Math.round(p.x), Math.round(p.y), size, size);
+    }
+    this.ctx.globalAlpha = 1;
+  }
+
+  renderEntity(entity) {
     this.ctx.save();
     this.ctx.translate(entity.x, entity.y);
     this.ctx.rotate(entity.rotation);
@@ -34,7 +44,7 @@ export default class Renderer {
       entity.frameY,
       entity.width,
       entity.height,
-      -Math.round(entity.width / 2), // dest x — centered on origin
+      -Math.round(entity.width / 2),
       -Math.round(entity.height / 2),
       entity.width,
       entity.height,

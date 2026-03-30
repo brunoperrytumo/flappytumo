@@ -2,9 +2,9 @@
 import Character from "./Character.js";
 
 const LAYERS = [
-  { count: 15, speed: 20, size: 1 }, // far
-  { count: 20, speed: 40, size: 1.5 }, // mid
-  { count: 15, speed: 80, size: 2 }, // near
+  { count: 15, speed: 5, size: 0.2 },
+  { count: 20, speed: 10, size: 0.5 },
+  { count: 15, speed: 20, size: 1 },
 ];
 
 export default class Background extends Character {
@@ -31,7 +31,7 @@ export default class Background extends Character {
 
   #makestar(layer, randomY = false) {
     return {
-      x: Math.random() * this.canvas.width,
+      x: Math.round(Math.random() * this.canvas.width),
       y: randomY ? Math.random() * this.canvas.height : 0,
       speed: layer.speed,
       size: layer.size,
@@ -40,9 +40,8 @@ export default class Background extends Character {
 
   update() {
     for (const star of this.#stars) {
-      star.y += Math.floor(star.speed * 0.04);
+      star.y += star.speed * 0.02;
 
-      // Recycle to the top when it falls off screen
       if (star.y > this.canvas.height) {
         star.y = 0;
         star.x = Math.random() * this.canvas.width;

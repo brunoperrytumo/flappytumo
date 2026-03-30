@@ -1,43 +1,35 @@
+// Asteroid.js
 import Character from "./Character.js";
 
 export default class Asteroid extends Character {
   speed;
-  #screenWidth;
-  #screenHeight;
-
-  #images = ["asteroid3.png"];
+  active = true;
 
   constructor() {
     super();
-
-    const main = document.querySelector("canvas");
-    this.#screenWidth = main.width;
-    this.#screenHeight = main.height;
   }
 
   async init() {
-    const img = Math.round(this.randomNumber(0, this.#images.length - 1));
-    await this.loadImage(`assets/${this.#images[img]}`);
-
+    await this.loadImage("assets/asteroid3.png");
     this.width = this.image.width;
     this.height = this.image.height;
-
-    this.#reset();
+    this.reset();
   }
 
-  #reset() {
-    this.scale = this.randomNumber(1, 1.5);
-    this.x = this.randomNumber(0, this.#screenWidth - this.width);
-    this.y = this.randomNumber(0, -this.#screenHeight);
-    this.speed = this.randomNumber(0.1, 1);
+  reset() {
+    this.scale = this.randomNumber(0.5, 1);
+    this.x = this.randomNumber(0, this.canvas.width);
+    this.y = this.randomNumber(-this.canvas.height, 0);
+    this.speed = this.randomNumber(20, 60);
+    this.active = true;
   }
 
-  update() {
-    this.y += this.speed;
-    this.rotation -= this.speed * 0.05;
+  update(dt) {
+    this.y += this.speed * dt;
+    this.rotation -= this.speed * dt * 0.05;
 
-    if (this.y > this.#screenHeight) {
-      this.#reset();
+    if (this.y > this.canvas.height + this.height) {
+      this.reset();
     }
   }
 }

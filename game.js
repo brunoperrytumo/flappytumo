@@ -4,8 +4,9 @@ import Renderer from "./Renderer.js";
 import Rocket from "./Rocket.js";
 import InputHandler from "./InputHandler.js";
 import Background from "./Background.js";
+import Explosion from "./Explosion.js";
 
-const MAX_ASTEROIDS = 4;
+const MAX_ASTEROIDS = 5;
 
 function checkCollision(a, b) {
   const dist = Math.hypot(b.x - a.x, b.y - a.y);
@@ -14,16 +15,16 @@ function checkCollision(a, b) {
 
 window.onload = async () => {
   const renderer = new Renderer();
-
   const rocket = new Rocket();
-  await rocket.init();
-
+  const input = new InputHandler();
   const background = new Background();
+
+  await rocket.init();
   await background.init();
 
-  const input = new InputHandler();
-
   const asteroids = [];
+  const explosions = [];
+
   for (let i = 0; i < MAX_ASTEROIDS; i++) {
     const asteroid = new Asteroid();
     await asteroid.init();
@@ -32,24 +33,32 @@ window.onload = async () => {
 
   let lives = 3;
   let score = 0;
+  let lastTime = performance.now();
 
-  const loop = () => {
-    if (input.isButtonDown("left")) rocket.left();
-    if (input.isButtonDown("right")) rocket.right();
+  const loop = (timestamp) => {
+    const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+    lastTime = timestamp;
 
-    renderer.reset();
+    rocket.update(input, dt);
+    background.update(dt);
+    for (const asteroid of asteroids) asteroid.update(dt);
+    for (const explosion of explosions) explosion.update(dt);
 
-    background.update();
-    renderer.renderBackground(background);
+    for (const bullet of rocket.bullets) {
+      for (const asteroid of asteroids) {
+        if (!asteroid.active) continue;
+        if (checkCollision(bullet, asteroid)) {
+          bullet.active = false;
+          explosions.push(new Explosion(asteroid.x, asteroid.y));
+          asteroid.reset();
+          score += 10;
+        }
+      }
+    }
 
-    rocket.update();
-
-    for (let i = 0; i < MAX_ASTEROIDS; i++) {
-      const asteroid = asteroids[i];
-      asteroid.update();
-      renderer.render(asteroid);
-
+    for (const asteroid of asteroids) {
       if (checkCollision(rocket, asteroid)) {
+        asteroid.reset();
         lives = Math.max(0, lives - 1);
         if (lives === 0) {
           console.log("Game over!");
@@ -58,9 +67,18 @@ window.onload = async () => {
       }
     }
 
-    renderer.render(rocket);
+    explosions.splice(0, explosions.length, ...explosions.filter((e) => e.active));
+
+    // --- Render ---
+    renderer.reset();
+    renderer.renderBackground(background);
+    for (const bullet of rocket.bullets) renderer.renderEntity(bullet);
+    // for (const asteroid of asteroids) renderer.renderEntity(asteroid);
+    // for (const explosion of explosions) renderer.renderExplosion(explosion);
+    renderer.renderEntity(rocket);
+
     requestAnimationFrame(loop);
   };
 
-  loop();
+  requestAnimationFrame(loop);
 };

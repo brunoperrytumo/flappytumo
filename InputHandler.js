@@ -1,13 +1,15 @@
 // InputHandler.js
 export default class InputHandler {
-  held = { left: false, right: false };
+  held = { left: false, right: false, fire: false };
 
   constructor() {
     const leftBtn = document.getElementById("left-button");
     const rightBtn = document.getElementById("right-button");
+    const shootBtn = document.getElementById("shoot-button");
 
     this.#registerButton(leftBtn, "left");
     this.#registerButton(rightBtn, "right");
+    this.#registerButton(shootBtn, "fire");
     this.#registerKeyboard();
   }
 
@@ -29,14 +31,17 @@ export default class InputHandler {
       a: "left",
       ArrowRight: "right",
       d: "right",
-      Space: "fire",
+      " ": "fire",
     };
 
     window.addEventListener("keydown", (e) => {
-      if (map[e.key]) this.held[map[e.key]] = true;
+      if (map[e.key] !== undefined) {
+        e.preventDefault();
+        this.held[map[e.key]] = true;
+      }
     });
     window.addEventListener("keyup", (e) => {
-      if (map[e.key]) this.held[map[e.key]] = false;
+      if (map[e.key] !== undefined) this.held[map[e.key]] = false;
     });
   }
 
