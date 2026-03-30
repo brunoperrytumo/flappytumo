@@ -1,5 +1,5 @@
 // Background.js
-import Character from "./Character.js";
+import Entity from "./Entity.js";
 
 const LAYERS = [
   { count: 15, speed: 5, size: 0.2 },
@@ -7,7 +7,7 @@ const LAYERS = [
   { count: 15, speed: 20, size: 1 },
 ];
 
-export default class Background extends Character {
+export default class Background extends Entity {
   #stars = [];
 
   constructor() {

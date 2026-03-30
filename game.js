@@ -1,12 +1,12 @@
 // game.js
-import Asteroid from "./Asteroid.js";
-import Renderer from "./Renderer.js";
-import Rocket from "./Rocket.js";
-import InputHandler from "./InputHandler.js";
-import Background from "./Background.js";
-import Explosion from "./Explosion.js";
+import Asteroid from "./src/Asteroid.js";
+import Renderer from "./src/Renderer.js";
+import Rocket from "./src/Rocket.js";
+import InputHandler from "./src/InputHandler.js";
+import Background from "./src/Background.js";
+import Explosion from "./src/Explosion.js";
 
-const MAX_ASTEROIDS = 5;
+const MAX_ASTEROIDS = 20;
 
 function checkCollision(a, b) {
   const dist = Math.hypot(b.x - a.x, b.y - a.y);
@@ -73,8 +73,8 @@ window.onload = async () => {
     renderer.reset();
     renderer.renderBackground(background);
     for (const bullet of rocket.bullets) renderer.renderEntity(bullet);
-    // for (const asteroid of asteroids) renderer.renderEntity(asteroid);
-    // for (const explosion of explosions) renderer.renderExplosion(explosion);
+    for (const asteroid of asteroids) renderer.renderEntity(asteroid);
+    for (const explosion of explosions) renderer.renderExplosion(explosion);
     renderer.renderEntity(rocket);
 
     requestAnimationFrame(loop);

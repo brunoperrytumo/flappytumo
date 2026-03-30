@@ -1,7 +1,7 @@
 // Asteroid.js
-import Character from "./Character.js";
+import Entity from "./Entity.js";
 
-export default class Asteroid extends Character {
+export default class Asteroid extends Entity {
   speed;
   active = true;
 

@@ -1,7 +1,7 @@
 // Bullet.js
-import Character from "./Character.js";
+import Entity from "./Entity.js";
 
-export default class Bullet extends Character {
+export default class Bullet extends Entity {
   #speed = 200;
   active = true;
 

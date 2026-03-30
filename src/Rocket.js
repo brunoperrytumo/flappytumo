@@ -1,10 +1,10 @@
 // Rocket.js
-import Character from "./Character.js";
+import Entity from "./Entity.js";
 import Bullet from "./Bullet.js";
 
 const FIRE_COOLDOWN = 0.2;
 
-export default class Rocket extends Character {
+export default class Rocket extends Entity {
   #state = "normal";
   #velocityX = 0;
   #fireCooldown = 0;
