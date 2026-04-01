@@ -15,7 +15,7 @@ export default class Background extends Entity {
   }
 
   async init() {
-    await this.loadImage("assets/particle.png");
+    await super.init("assets/particle.png");
     this.#reset();
   }
 

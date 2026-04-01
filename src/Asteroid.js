@@ -10,9 +10,7 @@ export default class Asteroid extends Entity {
   }
 
   async init() {
-    await this.loadImage("assets/asteroid3.png");
-    this.width = this.image.width;
-    this.height = this.image.height;
+    await super.init("assets/asteroid3.png");
     this.reset();
   }
 

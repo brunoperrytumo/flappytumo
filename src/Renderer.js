@@ -25,7 +25,7 @@ export default class Renderer {
       const alpha = Math.min(p.life / 0.5, 1);
       this.ctx.globalAlpha = alpha;
 
-      this.ctx.fillStyle = p.size > 2 ? "#484848" : "#ffffff";
+      this.ctx.fillStyle = p.size > 2 ? p.color : "#ffffff";
 
       const size = Math.ceil(p.size * 2);
       this.ctx.fillRect(Math.round(p.x), Math.round(p.y), size, size);

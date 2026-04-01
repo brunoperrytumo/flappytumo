@@ -11,12 +11,6 @@ export default class Bullet extends Entity {
     this.y = y;
   }
 
-  async init() {
-    await this.loadImage("assets/bullet.png");
-    this.width = this.image.width;
-    this.height = this.image.height;
-  }
-
   update(dt) {
     this.y -= this.#speed * dt;
 

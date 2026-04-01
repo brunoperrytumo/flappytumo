@@ -1,4 +1,4 @@
-export default class Character {
+export default class Entity {
   x = 0;
   y = 0;
   rotation = 0;
@@ -20,6 +20,12 @@ export default class Character {
     this.canvas = document.querySelector("canvas");
   }
 
+  async init(imageURL) {
+    await this.loadImage(imageURL);
+    this.width = this.image.width;
+    this.height = this.image.height;
+  }
+
   update() {}
 
   getBounds() {
@@ -33,8 +39,6 @@ export default class Character {
     };
   }
   getRadius() {
-    // Use the smaller dimension so the circle fits inside the sprite.
-    // Multiply by 0.8 to give a slight margin — feels fairer to the player.
     return ((Math.min(this.width, this.height) * this.scale) / 2) * 0.8;
   }
 

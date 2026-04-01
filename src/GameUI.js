@@ -1,0 +1,29 @@
+// GameUI.js
+export default class GameUI {
+  #ammo;
+  #fuel;
+  #score;
+  constructor() {
+    this.#ammo = document.querySelector("#ammo").querySelector("h2");
+    this.#fuel = document.querySelector("#fuel").querySelector("h2");
+    this.#score = document.querySelector("#game-score");
+  }
+
+  updateAmmo(ammo) {
+    this.#ammo.innerText = ammo;
+  }
+
+  udpateFuel(fuel) {
+    this.#fuel.innerText = `${Math.floor(fuel)}%`;
+  }
+
+  updateScore(score) {
+    this.#score.innerText = score;
+  }
+
+  reset(ammo = 100, fuel = 100, score = 0) {
+    this.updateAmmo(ammo);
+    this.udpateFuel(fuel);
+    this.updateScore(score);
+  }
+}

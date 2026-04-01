@@ -5,6 +5,8 @@ import Rocket from "./src/Rocket.js";
 import InputHandler from "./src/InputHandler.js";
 import Background from "./src/Background.js";
 import Explosion from "./src/Explosion.js";
+import GameUI from "./src/GameUI.js";
+import Fuel from "./src/Fuel.js";
 
 const MAX_ASTEROIDS = 20;
 
@@ -14,12 +16,17 @@ function checkCollision(a, b) {
 }
 
 window.onload = async () => {
+  const gameUI = new GameUI();
   const renderer = new Renderer();
   const rocket = new Rocket();
+  const fuel = new Fuel();
   const input = new InputHandler();
   const background = new Background();
 
+  gameUI.reset();
+
   await rocket.init();
+  await fuel.init();
   await background.init();
 
   const asteroids = [];
@@ -31,7 +38,6 @@ window.onload = async () => {
     asteroids.push(asteroid);
   }
 
-  let lives = 3;
   let score = 0;
   let lastTime = performance.now();
 
@@ -40,6 +46,7 @@ window.onload = async () => {
     lastTime = timestamp;
 
     rocket.update(input, dt);
+    fuel.update();
     background.update(dt);
     for (const asteroid of asteroids) asteroid.update(dt);
     for (const explosion of explosions) explosion.update(dt);
@@ -49,23 +56,33 @@ window.onload = async () => {
         if (!asteroid.active) continue;
         if (checkCollision(bullet, asteroid)) {
           bullet.active = false;
-          explosions.push(new Explosion(asteroid.x, asteroid.y));
+          explosions.push(new Explosion(asteroid.x, asteroid.y, "#484848"));
           asteroid.reset();
           score += 10;
         }
+      }
+      if (checkCollision(bullet, fuel)) {
+        explosions.push(new Explosion(fuel.x, fuel.y, "#ffff00"));
+        fuel.reset();
       }
     }
 
     for (const asteroid of asteroids) {
       if (checkCollision(rocket, asteroid)) {
         asteroid.reset();
-        lives = Math.max(0, lives - 1);
-        if (lives === 0) {
+        rocket.lives--;
+        if (rocket.lives === 0) {
           console.log("Game over!");
           return;
         }
       }
     }
+
+    if (checkCollision(rocket, fuel)) {
+      rocket.fuel = 100;
+      fuel.reset();
+    }
+    gameUI.udpateFuel(rocket.fuel);
 
     explosions.splice(0, explosions.length, ...explosions.filter((e) => e.active));
 
@@ -75,7 +92,12 @@ window.onload = async () => {
     for (const bullet of rocket.bullets) renderer.renderEntity(bullet);
     for (const asteroid of asteroids) renderer.renderEntity(asteroid);
     for (const explosion of explosions) renderer.renderExplosion(explosion);
+    renderer.renderEntity(fuel);
     renderer.renderEntity(rocket);
+
+    // --- UI ---
+    gameUI.updateAmmo(rocket.ammo);
+    gameUI.updateScore(score);
 
     requestAnimationFrame(loop);
   };

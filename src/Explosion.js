@@ -7,7 +7,7 @@ export default class Explosion {
   active = true;
   #particles = [];
 
-  constructor(x, y) {
+  constructor(x, y, c = "#ffffff") {
     // Spawn particles in all directions
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const angle = (i / PARTICLE_COUNT) * Math.PI * 2;
@@ -19,6 +19,7 @@ export default class Explosion {
         vy: Math.sin(angle) * speed,
         life: PARTICLE_LIFE,
         size: Math.random() * 2 + 1,
+        color: c,
       });
     }
   }

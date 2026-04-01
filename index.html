@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!doctype html>
 <html lang="en">
 
@@ -18,20 +19,41 @@
       <div id="main"></div>
       <div id="highscores"></div>
       <div id="game">
-        <button id="shoot-button">SHOOT</button>
-        <div id="status-container">
-
+        <h1 id="game-score">0</h1>
+        <div id="game-controls">
+          <button id="shoot-button">
+            <svg width="64" height="64" viewBox="0 0 15 15">
+              <path fill="#ff1a00"
+                d="M5,1l0,1l-2,0l0,1l-1,0l0,2l-1,0l0,5l1,0l0,2l1,0l0,1l2,0l0,1l5,0l0,-1l2,0l0,-1l1,0l0,-2l1,0l0,-5l-1,0l0,-2l-1,0l0,-1l-2,0l0,-1l-5,0Z" />
+              <path
+                d="M1,10l-1,0l0,-5l1,0l0,5Zm0,-5l0,-2l1,0l0,2l-1,0Zm1,-2l0,-1l1,0l0,1l-1,0Zm1,-1l0,-1l2,0l0,1l-2,0Zm2,-1l0,-1l5,0l0,1l-5,0Zm5,0l2,0l0,1l-2,0l0,-1Zm2,1l1,0l0,1l-1,0l0,-1Zm1,1l1,0l0,2l-1,0l0,-2Zm1,2l1,0l0,5l-1,0l0,-5Zm0,5l0,2l-1,0l0,-2l1,0Zm-1,2l0,1l-1,0l0,-1l1,0Zm-1,1l0,1l-2,0l0,-1l2,0Zm-2,1l0,1l-5,0l0,-1l5,0Zm-5,0l-2,0l0,-1l2,0l0,1Zm-2,-1l-1,0l0,-1l1,0l0,1Zm-1,-1l-1,0l0,-2l1,0l0,2Z" />
+              <path fill="#a71100"
+                d="M5,13l5,0l0,1l-5,0l0,-1Zm5,0l0,-1l2,0l0,1l-2,0Zm-7,-1l2,0l0,1l-2,0l0,-1Zm9,0l0,-1l1,0l0,1l-1,0Zm-9,0l-1,0l0,-1l1,0l0,1Z" />
+              <path fill="#ffa49a"
+                d="M12,3l1,0l0,1l-1,0l0,-1Zm-9,0l0,1l-1,0l0,-1l1,0Zm0,0l0,-1l2,0l0,1l-2,0Zm2,-1l0,-1l5,0l0,1l-5,0Zm5,0l2,0l0,1l-2,0l0,-1Z" />
+            </svg>
+          </button>
+          <div id="states-container">
+            <div id="ammo" class="container">
+              <h3>AMMO</h3>
+              <h2>100</h2>
+            </div>
+            <div id="fuel" class="container">
+              <h3>FUEL</h3>
+              <h2>100%</h2>
+            </div>
+          </div>
+          <button id="left-button">
+            <svg width="32" height="32" viewBox="0 0 4 5" style="fill:white;rotate:180deg">
+              <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
+            </svg>
+          </button>
+          <button id="right-button">
+            <svg width="32" height="32" viewBox="0 0 4 5" fill="white">
+              <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
+            </svg>
+          </button>
         </div>
-        <button id="left-button">
-          <svg width="32" height="32" viewBox="0 0 4 5" style="fill:white;rotate:180deg">
-            <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
-          </svg>
-        </button>
-        <button id="right-button">
-          <svg width="32" height="32" viewBox="0 0 4 5" fill="white">
-            <path d="M2,5l-2,0l0,-5l2,0l0,1l1,0l0,1l1,-0l0,1l-1,0l0,1l-1,0l0,1Z" />
-          </svg>
-        </button>
       </div>
     </div>
   </main>

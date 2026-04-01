@@ -1,3 +1,5 @@
+/* style.css */
+
 @font-face {
     font-family: uiFont;
     src: url('assets/minecraft.ttf');
@@ -70,9 +72,40 @@ canvas {
     display: flex;
 }
 
+
+
 #game {
     display: flex;
-    background-color: orange;
-    align-self: flex-end;
     flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#game-score {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    font-size: clamp(1.5rem, 10vw, 4rem);
+}
+
+#game-controls {
+    display: flex;
+}
+
+#states-container {
+    flex: 1;
+    display: flex;
+}
+
+#states-container .container {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#states-container h3 {
+    font-size: clamp(0.8rem, 5vw, 1.3rem);
 }
