@@ -21,7 +21,7 @@ export default class Entity {
   }
 
   async init(imageURL) {
-    await this.loadImage(imageURL);
+    this.image = await this.loadImage(imageURL);
     this.width = this.image.width;
     this.height = this.image.height;
   }
@@ -48,8 +48,8 @@ export default class Entity {
       img.onload = () => {
         this.width = img.width;
         this.height = img.height;
-        this.image = img;
-        resolve(true);
+
+        resolve(img);
       };
       img.onerror = reject;
       img.src = url;

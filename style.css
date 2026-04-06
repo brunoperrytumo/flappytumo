@@ -72,10 +72,57 @@ canvas {
     display: flex;
 }
 
-
-
-#game {
+/* MENU */
+#menu {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 20px;
+}
+
+#menu button,
+#scores button {
+    border: 2px solid white;
+}
+
+/* SCORES */
+#scores {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    gap: 20px;
+}
+
+#scores h2 {
+    font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+table {
+    height: fit-content;
+    width: fit-content;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+    font-size: clamp(1.2rem, 5vw, 2rem);
+    text-transform: uppercase;
+}
+
+th {
+    border-bottom: 1px solid white;
+}
+
+
+
+/* GAME */
+#game {
+    display: none;
     flex: 1;
     flex-direction: column;
     justify-content: space-between;

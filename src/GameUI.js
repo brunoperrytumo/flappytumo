@@ -7,6 +7,8 @@ export default class GameUI {
     this.#ammo = document.querySelector("#ammo").querySelector("h2");
     this.#fuel = document.querySelector("#fuel").querySelector("h2");
     this.#score = document.querySelector("#game-score");
+
+    this.reset();
   }
 
   updateAmmo(ammo) {

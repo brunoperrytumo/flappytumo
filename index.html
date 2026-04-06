@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
   <link rel="stylesheet" href="style.css" />
-  <script type="module" src="game.js"></script>
+  <script type="module" src="script.js"></script>
 </head>
 
 <body>
@@ -16,8 +16,25 @@
     <canvas width="150" height="250"></canvas>
 
     <div id="ui">
-      <div id="main"></div>
-      <div id="highscores"></div>
+      <div id="menu">
+        <button id="play-button">Play!</button>
+        <button id="scores-button">HighScores</button>
+      </div>
+      <div id="scores">
+        <h2>HIGHSCORES</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>SCORE</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+
+        </table>
+        <button id="back-button">Back</button>
+      </div>
       <div id="game">
         <h1 id="game-score">0</h1>
         <div id="game-controls">
