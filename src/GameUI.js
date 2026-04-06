@@ -1,5 +1,8 @@
 // GameUI.js
 export default class GameUI {
+  #gamecontrolsElem;
+  #gameoverElem;
+
   #ammo;
   #fuel;
   #score;
@@ -22,6 +25,8 @@ export default class GameUI {
   updateScore(score) {
     this.#score.innerText = score;
   }
+
+  showGameOver() {}
 
   reset(ammo = 100, fuel = 100, score = 0) {
     this.updateAmmo(ammo);

@@ -1,8 +1,8 @@
-export default class Menu {
-  state = "menu";
-  #element;
+import Screen from "./Screen.js";
+
+export default class Menu extends Screen {
   constructor() {
-    this.#element = document.querySelector("#menu");
+    super("menu");
     document.querySelector("#play-button").onclick = () => (this.state = "game");
     document.querySelector("#scores-button").onclick = () => (this.state = "scores");
   }
@@ -11,11 +11,8 @@ export default class Menu {
     this.state = "menu";
   }
 
-  show() {
-    this.#element.style.display = "flex";
-  }
   hide() {
-    this.#element.style.display = "none";
+    super.hide();
     this.reset();
   }
 }

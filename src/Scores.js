@@ -1,17 +1,15 @@
-export default class Scores {
-  state = "scores";
+import Screen from "./Screen.js";
 
-  #element;
+export default class Scores extends Screen {
   constructor() {
-    this.#element = document.querySelector("#scores");
+    super("scores");
 
     this.functionUrl =
       "https://ehhmqckxetsepnvcefvx.supabase.co/functions/v1/super-function";
     this.supabaseKey =
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoaG1xY2t4ZXRzZXBudmNlZnZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjE4OTUsImV4cCI6MjA4ODM5Nzg5NX0.SLhe_PyRsxv_BYN4WcmjtoeY5F67Zun0boeXh2jmpFE"; // Same anon key as before
 
-    document.querySelector("#back-button").onclick = () =>
-      (this.state = "menu");
+    document.querySelector("#back-button").onclick = () => (this.state = "menu");
   }
 
   async init() {
@@ -20,6 +18,15 @@ export default class Scores {
 
   reset() {
     this.state = "scores";
+  }
+
+  isEligible(score) {
+    for (let i = 0; i < this.highscores.length; i++) {
+      if (this.highscores[i].score < score) {
+        return true;
+      }
+    }
+    return false;
   }
 
   async callFunction(action, data = {}) {
@@ -33,11 +40,10 @@ export default class Scores {
         body: JSON.stringify(action),
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.error || "Request failed");
+        throw new Error(response.error || "Request failed");
       }
+      const result = await response.json();
 
       return result;
     } catch (error) {
@@ -48,9 +54,10 @@ export default class Scores {
 
   async getHighscores() {
     const result = await this.callFunction({ action: "GET_HIGHSCORES" });
-    const tbody = this.#element.querySelector("tbody");
-    for (let i = 0; i < result.highscores.length; i++) {
-      const r = result.highscores[i];
+    this.highscores = result.highscores;
+    const tbody = this.element.querySelector("tbody");
+    for (let i = 0; i < this.highscores.length; i++) {
+      const r = this.highscores[i];
 
       const tr = document.createElement("tr");
       const tdName = document.createElement("td");
@@ -72,12 +79,8 @@ export default class Scores {
     return result;
   }
 
-  show() {
-    this.#element.style.display = "flex";
-  }
-
   hide() {
-    this.#element.style.display = "none";
+    super.hide();
     this.reset();
   }
 }

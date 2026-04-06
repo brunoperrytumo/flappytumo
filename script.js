@@ -6,14 +6,16 @@ import Background from "./src/Background.js";
 import Game from "./src/Game.js";
 import Menu from "./src/Menu.js";
 import Scores from "./src/Scores.js";
+import GameOver from "./src/GameOver.js";
 
 window.onload = async () => {
-  const gameStates = {
+  const gameScreens = {
     MENU: "menu",
     GAME: "game",
     SCORES: "scores",
+    GAMEOVER: "gameover",
   };
-  let currentState = gameStates.MENU;
+  let currentScreen = gameScreens.GAMEOVER;
 
   const menu = new Menu();
   const scores = new Scores();
@@ -21,6 +23,8 @@ window.onload = async () => {
 
   const game = new Game();
   await game.init();
+
+  const gameover = new GameOver();
 
   const renderer = new Renderer();
   const input = new InputHandler();
@@ -40,34 +44,49 @@ window.onload = async () => {
 
     background.update(dt);
 
-    switch (currentState) {
-      case gameStates.MENU:
-        currentState = menu.state;
-        if (currentState == gameStates.GAME) {
+    switch (currentScreen) {
+      case gameScreens.MENU:
+        currentScreen = menu.state;
+        if (currentScreen == gameScreens.GAME) {
           menu.hide();
           game.show();
-        } else if (currentState == gameStates.SCORES) {
+        } else if (currentScreen == gameScreens.SCORES) {
           menu.hide();
           scores.show();
         }
         break;
-      case gameStates.GAME:
-        game.update(input, dt);
-        game.render(renderer);
+      case gameScreens.GAME:
+        currentScreen = game.state;
+        if (currentScreen == gameScreens.GAMEOVER) {
+          gameover.show(scores, game.score);
+          game.hide();
+        } else {
+          game.update(input, dt);
+          game.render(renderer);
+        }
+
         break;
-      case gameStates.SCORES:
-        currentState = scores.state;
-        if (currentState == gameStates.MENU) {
+      case gameScreens.SCORES:
+        currentScreen = scores.state;
+        if (currentScreen == gameScreens.MENU) {
           scores.hide();
           menu.show();
+        }
+        break;
+      case gameScreens.GAMEOVER:
+        currentScreen = gameover.state;
+        if (currentScreen == gameScreens.MENU) {
+          gameover.hide();
+          menu.show();
+        } else if (currentScreen == gameScreens.GAME) {
+          gameover.hide();
+          game.show();
         }
         break;
     }
 
     requestAnimationFrame(loop);
   };
-
-  const updateGame = (dt) => {};
 
   requestAnimationFrame(loop);
 };

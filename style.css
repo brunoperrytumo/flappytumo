@@ -74,7 +74,7 @@ canvas {
 
 /* MENU */
 #menu {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -83,7 +83,8 @@ canvas {
 }
 
 #menu button,
-#scores button {
+#scores button,
+#gameover button {
     border: 2px solid white;
 }
 
@@ -117,8 +118,6 @@ td {
 th {
     border-bottom: 1px solid white;
 }
-
-
 
 /* GAME */
 #game {
@@ -155,4 +154,64 @@ th {
 
 #states-container h3 {
     font-size: clamp(0.8rem, 5vw, 1.3rem);
+}
+
+/* GAME OVER */
+#gameover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: rgba(255, 0, 0, 0.5);
+    flex: 1;
+    gap: 10px;
+}
+
+#gameover h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+input {
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+    text-align: center;
+    width: calc(3ch + 20px);
+    text-transform: uppercase;
+    border: none;
+    color: black;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding-bottom: 5px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0) 20%, black 0%);
+    background-position: bottom;
+    background-size: 34% 4px;
+    background-repeat: repeat-x;
+}
+
+#highscore {
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+    width: 80%;
+    background-color: white;
+}
+
+#highscore h3 {
+    font-size: clamp(2, 5vw, 3);
+    color: black;
+}
+
+#highscore button {
+    color: black;
+    border-color: black;
+}
+
+button.disabled {
+    opacity: 0.7;
+    pointer-events: none;
 }
