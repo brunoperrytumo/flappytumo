@@ -37,7 +37,10 @@ export default class Game {
   }
 
   update(input, dt) {
-    this.#rocket.update(input, dt);
+    if (this.#rocket.lives > 0) {
+      this.#rocket.update(input, dt);
+    }
+
     this.#item.update();
     for (const asteroid of this.#asteroids) asteroid.update(dt);
     for (const explosion of this.#explosions) explosion.update(dt);
@@ -47,13 +50,17 @@ export default class Game {
         if (!asteroid.active) continue;
         if (this.#checkCollision(bullet, asteroid)) {
           bullet.active = false;
-          this.#explosions.push(new Explosion(asteroid.x, asteroid.y, "#484848"));
+          this.#explosions.push(
+            new Explosion(asteroid.x, asteroid.y, "#484848"),
+          );
           asteroid.reset();
           this.score += 10;
         }
       }
       if (this.#checkCollision(bullet, this.#item)) {
-        this.#explosions.push(new Explosion(this.#item.x, this.#item.y, "#ffff00"));
+        this.#explosions.push(
+          new Explosion(this.#item.x, this.#item.y, "#ffff00"),
+        );
         this.#item.reset();
       }
     }
@@ -96,14 +103,19 @@ export default class Game {
   render(renderer) {
     for (const bullet of this.#rocket.bullets) renderer.renderEntity(bullet);
     for (const asteroid of this.#asteroids) renderer.renderEntity(asteroid);
-    for (const explosion of this.#explosions) renderer.renderExplosion(explosion);
+    for (const explosion of this.#explosions)
+      renderer.renderExplosion(explosion);
     renderer.renderEntity(this.#item);
-    renderer.renderEntity(this.#rocket);
+    if (this.#rocket.lives > 0) {
+      renderer.renderEntity(this.#rocket);
+      renderer.renderExhaust(this.#rocket.exhaust);
+    }
   }
 
   reset() {
     this.score = 0;
     this.state = "game";
+    this.#rocket.reset();
   }
 
   show() {

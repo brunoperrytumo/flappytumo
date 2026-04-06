@@ -10,7 +10,8 @@ export default class Scores {
     this.supabaseKey =
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVoaG1xY2t4ZXRzZXBudmNlZnZ4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjE4OTUsImV4cCI6MjA4ODM5Nzg5NX0.SLhe_PyRsxv_BYN4WcmjtoeY5F67Zun0boeXh2jmpFE"; // Same anon key as before
 
-    document.querySelector("#back-button").onclick = () => (this.state = "menu");
+    document.querySelector("#back-button").onclick = () =>
+      (this.state = "menu");
   }
 
   async init() {
@@ -27,7 +28,7 @@ export default class Scores {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": this.supabaseKey,
+          Authorization: this.supabaseKey,
         },
         body: JSON.stringify(action),
       });
@@ -61,11 +62,13 @@ export default class Scores {
       tr.appendChild(tdScore);
 
       tbody.appendChild(tr);
-      console.log(r);
     }
   }
   async submitScore(playerName, score) {
-    const result = await this.callFunction("SUBMIT_SCORE", { playerName, score });
+    const result = await this.callFunction("SUBMIT_SCORE", {
+      playerName,
+      score,
+    });
     return result;
   }
 

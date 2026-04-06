@@ -4,12 +4,16 @@ import Bullet from "./Bullet.js";
 
 const FIRE_COOLDOWN = 0.2;
 const FUEL_DRAIN_RATE = 100 / 60;
+const EXHAUST_SPREAD = 3;
+const EXHAUST_LIFE = 0.4;
 
 export default class Rocket extends Entity {
   #state = "normal";
   #velocityX = 0;
+  #finalY;
   #fireCooldown = 0;
   #bulletImage = null;
+  exhaust = [];
   bullets = [];
   fuel = 100;
   ammo = 100;
@@ -23,8 +27,8 @@ export default class Rocket extends Entity {
     await super.init("assets/rocket.png");
     this.width = Rocket.FRAME_WIDTH;
     this.height = Rocket.FRAME_HEIGHT;
-    this.x = Math.round(this.canvas.width / 2);
-    this.y = Math.round(this.canvas.height - this.height * 2);
+
+    this.#finalY = Math.round(this.canvas.height - this.height * 2);
 
     const bulletImg = new Image();
     await new Promise((resolve, reject) => {
@@ -33,10 +37,29 @@ export default class Rocket extends Entity {
       bulletImg.src = "assets/bullet.png";
     });
     this.#bulletImage = bulletImg;
+
+    this.reset();
+  }
+
+  reset() {
+    this.x = Math.round(this.canvas.width / 2);
+    this.y = this.canvas.height;
+    this.fuel = 100;
+    this.ammo = 100;
+    this.lives = 3;
+    this.#state = "normal";
+    this.exhaust = [];
+    this.bullets = [];
+    this.#fireCooldown = 0;
   }
 
   update(input, dt) {
     this.#velocityX = 0;
+
+    this.y -= 1;
+    if (this.y < this.#finalY) {
+      this.y = this.#finalY;
+    }
 
     if (input.held.left) this.#velocityX = -1;
     if (input.held.right) this.#velocityX = 1;
@@ -48,8 +71,9 @@ export default class Rocket extends Entity {
 
     this.fuel = Math.max(0, this.fuel - FUEL_DRAIN_RATE * dt);
     if (this.fuel <= 0) {
-      this.state = "normal";
+      this.#state = "normal";
       this.#velocityX = 0;
+      this.exhaust = [];
       return;
     }
 
@@ -60,6 +84,23 @@ export default class Rocket extends Entity {
     if (this.#velocityX < -0.1) this.#state = "right";
     else if (this.#velocityX > 0.1) this.#state = "left";
     else this.#state = "normal";
+
+    for (let i = 0; i < 2; i++) {
+      this.exhaust.push({
+        x: this.x + (Math.random() - 0.5) * EXHAUST_SPREAD - 1,
+        y: this.y + this.height / 2,
+        vy: 20 + Math.random() * 30,
+        life: EXHAUST_LIFE,
+        size: Math.random() * 2 + 1,
+      });
+    }
+
+    // Update and cull exhaust particles
+    for (const p of this.exhaust) {
+      p.y += p.vy * dt;
+      p.life -= dt;
+    }
+    this.exhaust = this.exhaust.filter((p) => p.life > 0);
 
     super.update();
   }

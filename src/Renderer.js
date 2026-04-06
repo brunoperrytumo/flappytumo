@@ -14,7 +14,13 @@ export default class Renderer {
 
   renderBackground(background) {
     for (const star of background.stars) {
-      this.ctx.drawImage(background.image, star.x, star.y, star.size, star.size);
+      this.ctx.drawImage(
+        background.image,
+        star.x,
+        star.y,
+        star.size,
+        star.size,
+      );
     }
   }
 
@@ -50,5 +56,19 @@ export default class Renderer {
       entity.height,
     );
     this.ctx.restore();
+  }
+  renderExhaust(exhaust) {
+    for (const p of exhaust) {
+      if (p.life <= 0) continue;
+
+      const t = p.life / 0.4;
+      this.ctx.globalAlpha = t;
+      this.ctx.fillStyle =
+        t > 0.6 ? "#b7ff00" : t > 0.3 ? "#ffaa00" : "#ff4400";
+
+      const size = Math.ceil(p.size * t);
+      this.ctx.fillRect(Math.round(p.x), Math.round(p.y), size, size);
+    }
+    this.ctx.globalAlpha = 1;
   }
 }
