@@ -52,10 +52,21 @@ export default class Scores extends Screen {
     }
   }
 
+  async testing() {
+    const result = await this.callFunction({ action: "TESTING" });
+    return result || [];
+  }
+
   async getHighscores() {
     const result = await this.callFunction({ action: "GET_HIGHSCORES" });
-    this.highscores = result.highscores;
+    this.setHighscores(result.highscores);
+  }
+
+  setHighscores(scoresData) {
+    this.highscores = scoresData;
+
     const tbody = this.element.querySelector("tbody");
+    tbody.innerHTML = "";
     for (let i = 0; i < this.highscores.length; i++) {
       const r = this.highscores[i];
 
@@ -72,9 +83,10 @@ export default class Scores extends Screen {
     }
   }
   async submitScore(playerName, score) {
-    const result = await this.callFunction("SUBMIT_SCORE", {
-      playerName,
-      score,
+    const result = await this.callFunction({
+      action: "SUBMIT_SCORE",
+      playerName: playerName,
+      score: score,
     });
     return result;
   }

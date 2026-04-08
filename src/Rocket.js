@@ -1,6 +1,7 @@
 // Rocket.js
 import Entity from "./Entity.js";
 import Bullet from "./Bullet.js";
+import AudioPlayer from "./AudioPlayer.js";
 
 const FIRE_COOLDOWN = 0.2;
 const FUEL_DRAIN_RATE = 100 / 60;
@@ -118,6 +119,7 @@ export default class Rocket extends Entity {
     this.#fireCooldown = FIRE_COOLDOWN;
 
     this.ammo--;
+    AudioPlayer.play("shoot");
   }
 
   get frameX() {

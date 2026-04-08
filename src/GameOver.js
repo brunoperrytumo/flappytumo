@@ -3,12 +3,18 @@ import Screen from "./Screen.js";
 export default class GameOver extends Screen {
   #highscoreContainer;
   #nameInput;
+
+  #retryButton;
+  #homeButton;
   #sendButton;
   constructor() {
     super("gameover");
 
-    document.querySelector("#retry-button").onclick = () => (this.state = "game");
-    document.querySelector("#home-button").onclick = () => (this.state = "menu");
+    this.#retryButton = document.querySelector("#retry-button");
+    this.#homeButton = document.querySelector("#home-button");
+
+    this.#retryButton.onclick = () => (this.state = "game");
+    this.#homeButton.onclick = () => (this.state = "menu");
 
     this.#highscoreContainer = document.querySelector("#highscore");
     this.#sendButton = document.querySelector("#send-button");
@@ -23,6 +29,9 @@ export default class GameOver extends Screen {
     this.state = "gameover";
     this.#highscoreContainer.style.display = "none";
     this.#nameInput.value = "";
+    this.#sendButton.className = "disabled";
+    this.#retryButton.className = "";
+    this.#homeButton.className = "";
   }
 
   show(scores, score) {
@@ -33,8 +42,12 @@ export default class GameOver extends Screen {
       this.#highscoreContainer.querySelector("h3").innerText = `New Highscore: ${score}`;
 
       this.#sendButton.onclick = async () => {
+        this.#retryButton.className = "disabled";
+        this.#homeButton.className = "disabled";
+        this.#sendButton.className = "disabled";
         const res = await scores.submitScore(this.#nameInput.value, score);
-        console.log(res);
+        scores.setHighscores(res.highscores);
+        this.state = "scores";
       };
     }
   }

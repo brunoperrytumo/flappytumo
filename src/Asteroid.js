@@ -10,7 +10,7 @@ export default class Asteroid extends Entity {
   }
 
   async init() {
-    await super.init("assets/asteroid3.png");
+    await super.init("assets/asteroid.png");
     this.reset();
   }
 

@@ -4,7 +4,7 @@ import GameUI from "./GameUI.js";
 import Item from "./Item.js";
 import Rocket from "./Rocket.js";
 import Explosion from "./Explosion.js";
-import GameOver from "./GameOver.js";
+import AudioPlayer from "./AudioPlayer.js";
 
 export default class Game extends Screen {
   MAX_ASTEROIDS = 20;
@@ -51,9 +51,11 @@ export default class Game extends Screen {
           this.#explosions.push(new Explosion(asteroid.x, asteroid.y, "#484848"));
           asteroid.reset();
           this.score += 10;
+          AudioPlayer.play("asteroid_explosion");
         }
       }
       if (this.#checkCollision(bullet, this.#item)) {
+        bullet.active = false;
         this.#explosions.push(new Explosion(this.#item.x, this.#item.y, "#ffff00"));
         this.#item.reset();
       }
@@ -65,6 +67,7 @@ export default class Game extends Screen {
         this.#rocket.lives--;
         if (this.#rocket.lives === 0) {
           this.#explosions.push(new Explosion(this.#rocket.x, this.#rocket.y, "#ff0000"));
+          AudioPlayer.play("rocket_explosion");
           setTimeout(() => (this.state = "gameover"), 1500);
           return;
         }
@@ -80,6 +83,7 @@ export default class Game extends Screen {
           this.#rocket.fuel = 100;
           break;
       }
+      AudioPlayer.play("item");
       this.#item.reset();
     }
     this.#gameUI.udpateFuel(this.#rocket.fuel);

@@ -7,6 +7,7 @@ import Game from "./src/Game.js";
 import Menu from "./src/Menu.js";
 import Scores from "./src/Scores.js";
 import GameOver from "./src/GameOver.js";
+import AudioPlayer from "./src/AudioPlayer.js";
 
 window.onload = async () => {
   const gameScreens = {
@@ -15,7 +16,7 @@ window.onload = async () => {
     SCORES: "scores",
     GAMEOVER: "gameover",
   };
-  let currentScreen = gameScreens.GAMEOVER;
+  let currentScreen = gameScreens.MENU;
 
   const menu = new Menu();
   const scores = new Scores();
@@ -81,12 +82,31 @@ window.onload = async () => {
         } else if (currentScreen == gameScreens.GAME) {
           gameover.hide();
           game.show();
+        } else if (currentScreen == gameScreens.SCORES) {
+          gameover.hide();
+          scores.show();
         }
         break;
     }
 
     requestAnimationFrame(loop);
   };
+
+  //SPLASH
+  document.querySelector("#enter-button").onclick = () => {
+    const splashElem = document.querySelector("#splash");
+    document.querySelector("main").removeChild(splashElem);
+    menu.show();
+    AudioPlayer.play("game", true);
+  };
+
+  await AudioPlayer.load({
+    game: "assets/game_track.mp3",
+    shoot: "assets/shoot.mp3",
+    item: "assets/item_pick.mp3",
+    rocket_explosion: "assets/rocket_explosion.mp3",
+    asteroid_explosion: "assets/asteroid_explosion.mp3",
+  });
 
   requestAnimationFrame(loop);
 };

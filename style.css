@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: uiFont;
-    src: url('assets/minecraft.ttf');
+    src: url('assets/font.ttf');
 }
 
 :root {
@@ -34,6 +34,7 @@ body {
     height: 100dvh;
     align-items: center;
     justify-content: center;
+    background-color: #0d161f;
 }
 
 button {
@@ -65,6 +66,17 @@ canvas {
     image-rendering: pixelated;
 }
 
+/* SPLASH */
+#splash {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+    gap: 10px;
+}
+
 /* UI */
 #ui {
     position: absolute;
@@ -82,9 +94,15 @@ canvas {
     gap: 20px;
 }
 
+#menu h1 {
+    font-size: clamp(3rem, 1vw, 4rem);
+    text-align: center;
+}
+
 #menu button,
 #scores button,
-#gameover button {
+#gameover button,
+#splash button {
     border: 2px solid white;
 }
 
@@ -158,11 +176,10 @@ th {
 
 /* GAME OVER */
 #gameover {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: rgba(255, 0, 0, 0.5);
     flex: 1;
     gap: 10px;
 }
